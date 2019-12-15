@@ -2,18 +2,18 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1576384465937.000,
-    "dirty" : true,
+    "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
     "id" : "1863666A",
-    "lastKnownWriteTime" : 1576385044,
-    "last_content_update" : 1576385657729,
+    "lastKnownWriteTime" : 1576448196,
+    "last_content_update" : 1576448196901,
     "path" : "~/Desktop/website1/themes/hugo-sustain/layouts/index.html",
     "project_path" : "themes/hugo-sustain/layouts/index.html",
     "properties" : {
-        "cursorPosition" : "14,71",
-        "scrollLine" : "5"
+        "cursorPosition" : "14,82",
+        "scrollLine" : "10"
     },
     "relative_order" : 8,
     "source_on_save" : false,
