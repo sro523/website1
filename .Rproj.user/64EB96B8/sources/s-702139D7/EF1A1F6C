@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "4001911647",
+    "hash" : "3517163686",
     "id" : "EF1A1F6C",
-    "lastKnownWriteTime" : 1576446233,
-    "last_content_update" : 1576446233085,
+    "lastKnownWriteTime" : 1576450317,
+    "last_content_update" : 1576450317809,
     "path" : "~/Desktop/website1/content/blog/2019-12-14-my-favorite-python.Rmd",
     "project_path" : "content/blog/2019-12-14-my-favorite-python.Rmd",
     "properties" : {
-        "cursorPosition" : "39,1",
-        "scrollLine" : "21"
+        "cursorPosition" : "10,13",
+        "scrollLine" : "0"
     },
     "relative_order" : 9,
     "source_on_save" : false,

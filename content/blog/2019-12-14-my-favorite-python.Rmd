@@ -7,6 +7,8 @@ categories: []
 tags: []
 description: ''
 ---
+
+![alt text](/coolpython.png)
 Using the library reticulate, we can have both R chunks and python chunks within the same file! Isn't that neat
 
 
