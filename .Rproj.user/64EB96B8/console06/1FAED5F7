@@ -44,3 +44,306 @@ config.toml	content		index.Rmd	public		static		themes		website1.Rproj
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git init
 Initialized empty Git repository in /Users/sydro/Desktop/website1/.git/
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git commit -m "new website"
+[master (root-commit) e06ccc8] new website
+ Committer: Sydney Ortiz <sydro@Sydneys-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 264 files changed, 46144 insertions(+)
+ create mode 100644 .DS_Store
+ create mode 100644 .Rhistory
+ create mode 100644 .Rproj.user/64EB96B8/console06/1FAED5F7
+ create mode 100644 .Rproj.user/64EB96B8/console06/1FAED5F7.env
+ create mode 100644 .Rproj.user/64EB96B8/console06/INDEX001
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/114E2A
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/139ED254
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/3AC6D0B4
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/4090D043
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/40AAD792
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/46A9820B
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/4E197293
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/6072DEAB
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/7BC0D25A
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/7C065ED
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/9C0130ED
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/AC41FAE3
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/AFB0307B
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/B0D1FFE2
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/C03979B6
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/DAE226E9
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/DFF28180
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/E788CFB5
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/FB320C0A
+ create mode 100644 .Rproj.user/64EB96B8/sources/prop/INDEX
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/1863666A
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/1863666A-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/24F5EF48
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/24F5EF48-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/2521424-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/294B7DD2-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/2CED6C28
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/2CED6C28-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/32EFD32D-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/3EE5B318
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/3EE5B318-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/48917F-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/5084D152-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/5448F72D
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/5448F72D-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/58A065A4-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/67092D65-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/6DAC3059-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/7A7F8EA0-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/7C5B05D4
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/7C5B05D4-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/97D69140-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/9FCDF753-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/A989047B-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/B173EC2-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/BA8B9084
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/BA8B9084-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/BD7EDBF2
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/BD7EDBF2-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/D237EEA2-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/DC9C1A0F
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/DC9C1A0F-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/EF1A1F6C
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/EF1A1F6C-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/F0CD2021-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/F2881DF
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/F2881DF-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/F6699EB5-contents
+ create mode 100644 .Rproj.user/64EB96B8/sources/s-702139D7/lock_file
+ create mode 100644 .Rproj.user/shared/notebooks/16235BF8-2019-12-14-my-favorite-python/1/64EB96B8702139D7/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/16235BF8-2019-12-14-my-favorite-python/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/16235BF8-2019-12-14-my-favorite-python/1/s/ctae9sse2z2i6/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/8729FBD7-project2/1/64EB96B8702139D7/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/8729FBD7-project2/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/C3511D43-project2/1/64EB96B8480917B2/c5d9o8i7dliry/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/C3511D43-project2/1/64EB96B8480917B2/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/C3511D43-project2/1/64EB96B8480917B2/csetup_chunk/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/C3511D43-project2/1/s/cd2obiwi4dbip/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/C3511D43-project2/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/C3511D43-project2/1/s/csetup_chunk/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/EA2F8C17-Project1/1/64EB96B8480917B2/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/EA2F8C17-Project1/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ create mode 100644 .Rproj.user/shared/notebooks/paths
+ create mode 100644 config.toml
+ create mode 100644 content/.DS_Store
+ create mode 100644 content/Project1.Rmd
+ create mode 100644 content/Project1.html
+ create mode 100644 content/blog/.DS_Store
+ create mode 100644 content/blog/2019-12-14-my-favorite-python.Rmd
+ create mode 100644 content/blog/2019-12-14-my-favorite-python.html
+ create mode 100644 content/breastcancer.csv
+ create mode 100644 content/project2.html
+ create mode 100644 content/project2.rmd
+ create mode 100644 content/projects.md
+ create mode 100644 content/resume.md
+ create mode 100644 content/skincancer.csv
+ create mode 100644 index.Rmd
+ create mode 100644 public/.DS_Store
+ create mode 100644 public/404.html
+ create mode 100644 public/Project1.Rmd
+ create mode 100644 public/Project1_files/figure-html/PCA-1.png
+ create mode 100644 public/Project1_files/figure-html/PCA-2.png
+ create mode 100644 public/Project1_files/figure-html/PCA-3.png
+ create mode 100644 public/Project1_files/figure-html/plot1-1.png
+ create mode 100644 public/Project1_files/figure-html/plot2-1.png
+ create mode 100644 public/Project1_files/figure-html/plot2-2.png
+ create mode 100644 public/blog/.DS_Store
+ create mode 100644 public/blog/2015-07-23-r-rmarkdown.Rmd
+ create mode 100644 public/blog/2015-07-23-r-rmarkdown/index.html
+ create mode 100644 public/blog/2015-07-23-r-rmarkdown_files/.DS_Store
+ create mode 100644 public/blog/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png
+ create mode 100644 public/blog/2019-12-14-my-favorite-python.Rmd
+ create mode 100644 public/blog/creating-a-new-theme/index.html
+ create mode 100644 public/blog/goisforlovers/index.html
+ create mode 100644 public/blog/hugoisforlovers/index.html
+ create mode 100644 public/blog/index.html
+ create mode 100644 public/blog/index.xml
+ create mode 100644 public/blog/migrate-from-jekyll/index.html
+ create mode 100644 public/blog/my-favorite-python/index.html
+ create mode 100644 public/breastcancer.csv
+ create mode 100644 public/categories/development/index.html
+ create mode 100644 public/categories/development/index.xml
+ create mode 100644 public/categories/golang/index.html
+ create mode 100644 public/categories/golang/index.xml
+ create mode 100644 public/categories/index.html
+ create mode 100644 public/categories/index.xml
+ create mode 100644 public/categories/projects/index.html
+ create mode 100644 public/categories/projects/index.xml
+ create mode 100644 public/categories/r/index.html
+ create mode 100644 public/categories/r/index.xml
+ create mode 100644 public/categories/resume/index.html
+ create mode 100644 public/categories/resume/index.xml
+ create mode 100644 public/css/main.css
+ create mode 100644 public/img/.DS_Store
+ create mode 100644 public/img/help.png
+ create mode 100644 public/img/profile.png
+ create mode 100644 public/index.html
+ create mode 100644 public/index.xml
+ create mode 100644 public/js/docs.min.js
+ create mode 100644 public/js/ie10-viewport-bug-workaround.js
+ create mode 100644 public/js/main.js
+ create mode 100644 public/project1/index.html
+ create mode 100644 public/project2.rmd
+ create mode 100644 public/project2/index.html
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-3-1.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-3-2.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-4-1.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-4-2.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-4-3.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-4-4.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-4-5.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-6-1.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-6-2.png
+ create mode 100644 public/project2_files/figure-html/unnamed-chunk-6-3.png
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-3-1.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-3-2.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-4-1.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-4-2.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-4-3.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-4-4.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-4-5.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-6-1.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-6-2.pdf
+ create mode 100644 public/project2_files/figure-latex/unnamed-chunk-6-3.pdf
+ create mode 100644 public/projects-copy/index.html
+ create mode 100644 public/projects/index.html
+ create mode 100644 public/resume.pdf
+ create mode 100644 public/resume/index.html
+ create mode 100644 public/resume/index.xml
+ create mode 100644 public/resume/resume/index.html
+ create mode 100644 public/sitemap.xml
+ create mode 100644 public/skincancer.csv
+ create mode 100644 public/tags/development/index.html
+ create mode 100644 public/tags/development/index.xml
+ create mode 100644 public/tags/go/index.html
+ create mode 100644 public/tags/go/index.xml
+ create mode 100644 public/tags/golang/index.html
+ create mode 100644 public/tags/golang/index.xml
+ create mode 100644 public/tags/hugo/index.html
+ create mode 100644 public/tags/hugo/index.xml
+ create mode 100644 public/tags/index.html
+ create mode 100644 public/tags/index.xml
+ create mode 100644 public/tags/plot/index.html
+ create mode 100644 public/tags/plot/index.xml
+ create mode 100644 public/tags/presume/index.html
+ create mode 100644 public/tags/presume/index.xml
+ create mode 100644 public/tags/projects/index.html
+ create mode 100644 public/tags/projects/index.xml
+ create mode 100644 public/tags/r-markdown/index.html
+ create mode 100644 public/tags/r-markdown/index.xml
+ create mode 100644 public/tags/regression/index.html
+ create mode 100644 public/tags/regression/index.xml
+ create mode 100644 public/tags/templates/index.html
+ create mode 100644 public/tags/templates/index.xml
+ create mode 100644 public/tags/themes/index.html
+ create mode 100644 public/tags/themes/index.xml
+ create mode 100644 static/.DS_Store
+ create mode 100644 static/Project1_files/figure-html/PCA-1.png
+ create mode 100644 static/Project1_files/figure-html/PCA-2.png
+ create mode 100644 static/Project1_files/figure-html/PCA-3.png
+ create mode 100644 static/Project1_files/figure-html/plot1-1.png
+ create mode 100644 static/Project1_files/figure-html/plot2-1.png
+ create mode 100644 static/Project1_files/figure-html/plot2-2.png
+ create mode 100644 static/blog/.DS_Store
+ create mode 100644 static/blog/2015-07-23-r-rmarkdown_files/.DS_Store
+ create mode 100644 static/blog/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png
+ create mode 100644 static/img/.DS_Store
+ create mode 100644 static/img/help.png
+ create mode 100644 static/img/profile.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-3-1.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-3-2.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-4-1.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-4-2.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-4-3.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-4-4.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-4-5.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-6-1.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-6-2.png
+ create mode 100644 static/project2_files/figure-html/unnamed-chunk-6-3.png
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-3-1.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-3-2.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-4-1.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-4-2.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-4-3.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-4-4.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-4-5.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-6-1.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-6-2.pdf
+ create mode 100644 static/project2_files/figure-latex/unnamed-chunk-6-3.pdf
+ create mode 100644 static/resume.pdf
+ create mode 100644 themes/.DS_Store
+ create mode 100644 themes/hugo-sustain/.DS_Store
+ create mode 100644 themes/hugo-sustain/LICENSE.md
+ create mode 100644 themes/hugo-sustain/README.md
+ create mode 100644 themes/hugo-sustain/archetypes/default.md
+ create mode 100644 themes/hugo-sustain/exampleSite/.DS_Store
+ create mode 100644 themes/hugo-sustain/exampleSite/config.toml
+ create mode 100644 themes/hugo-sustain/exampleSite/content/.DS_Store
+ create mode 100644 themes/hugo-sustain/exampleSite/content/blog/creating-a-new-theme.md
+ create mode 100644 themes/hugo-sustain/exampleSite/content/blog/goisforlovers.md
+ create mode 100644 themes/hugo-sustain/exampleSite/content/blog/hugoisforlovers.md
+ create mode 100644 themes/hugo-sustain/exampleSite/content/blog/migrate-from-jekyll.md
+ create mode 100644 themes/hugo-sustain/exampleSite/content/projects.md
+ create mode 100644 themes/hugo-sustain/exampleSite/data/projects.yml
+ create mode 100644 themes/hugo-sustain/exampleSite/static/.DS_Store
+ create mode 100644 themes/hugo-sustain/exampleSite/static/img/.DS_Store
+ create mode 100644 themes/hugo-sustain/images/screenshot.png
+ create mode 100644 themes/hugo-sustain/images/tn.png
+ create mode 100644 themes/hugo-sustain/layouts/.DS_Store
+ create mode 100644 themes/hugo-sustain/layouts/404.html
+ create mode 100644 themes/hugo-sustain/layouts/_default/.DS_Store
+ create mode 100644 themes/hugo-sustain/layouts/_default/list.html
+ create mode 100644 themes/hugo-sustain/layouts/_default/projects.html
+ create mode 100644 themes/hugo-sustain/layouts/_default/resume.html
+ create mode 100644 themes/hugo-sustain/layouts/_default/single.html
+ create mode 100644 themes/hugo-sustain/layouts/index.html
+ create mode 100644 themes/hugo-sustain/layouts/partials/disqus.html
+ create mode 100644 themes/hugo-sustain/layouts/partials/footer.html
+ create mode 100644 themes/hugo-sustain/layouts/partials/head.html
+ create mode 100644 themes/hugo-sustain/layouts/partials/header.html
+ create mode 100644 themes/hugo-sustain/layouts/partials/js.html
+ create mode 100644 themes/hugo-sustain/layouts/partials/social.html
+ create mode 100644 themes/hugo-sustain/static/css/main.css
+ create mode 100644 themes/hugo-sustain/static/js/docs.min.js
+ create mode 100644 themes/hugo-sustain/static/js/ie10-viewport-bug-workaround.js
+ create mode 100644 themes/hugo-sustain/static/js/main.js
+ create mode 100644 themes/hugo-sustain/theme.toml
+ create mode 100644 website1.Rproj
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push origin master
+fatal: 'origin' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git config --global user.username sro523
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git remote add origin https://github.com/YourGithubUsername/website.git[C1.git[C[C[C[C
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git remote add origin https://github.com/YourGithubUsername/website1.git[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[32Pconfig --global user.username sro523[18Ppush origin mastercommit -m "new website"[5Ppush origin master
+remote: Repository not found.
+fatal: repository 'https://github.com/YourGithubUsername/website1.git/' not found
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push origin masterremote add origin https://github.com/YourGithubUsername/website1.git[1P1.gite1.git[C[1P.git[C[1Pebsite.gitWebsite.git
+fatal: remote origin already exists.
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git remote add origin https://github.com/YourGithubUsername/Website.git[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpush origin master[K
+remote: Repository not found.
+fatal: repository 'https://github.com/YourGithubUsername/website1.git/' not found
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push origin master
+remote: Repository not found.
+fatal: repository 'https://github.com/YourGithubUsername/website1.git/' not found
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push origin masterremote add origin https://github.com/YourGithubUsername/Website.git[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1P/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git[1Pe/Website.git/e/Website.git[C[1P/Website.gits/Website.gitr/Website.gito/Website.git5/Website.git2/Website.git3/Website.git[C[C[1Pebsite.gitwebsite.git[C[C[C[C[C[C1.git
+fatal: remote origin already exists.
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git init
+Reinitialized existing Git repository in /Users/sydro/Desktop/website1/.git/
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
