@@ -1,0 +1,243 @@
+---
+title: "HW 8"
+author: "SDS348 Fall 2019"
+date: ""
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r global_options, include=FALSE}
+options(repos=structure(c(CRAN="YOUR FAVORITE MIRROR")))
+library(knitr)
+opts_chunk$set(fig.align="center", fig.height=5, message=FALSE, warning=FALSE, fig.width=8, tidy.opts=list(width.cutoff=60),tidy=TRUE)
+```
+
+## Sydney Ortiz, sro523
+
+**This homework is due on Nov 12, 2019 at 11:59pm. Please submit as a pdf file on Canvas.**
+
+*For all questions, include the R commands/functions that you used to find your answer. Answers without supporting code will not receive credit.*
+
+> ### How to submit this assignment
+> All homework assignments will be completed using R Markdown. These `.Rmd` files consist of text/syntax (formatted using Markdown) alongside embedded R code. 
+> When you have completed the assignment (by adding R code inside codeblocks and supporting text outside of the codeblocks), create your document as follows:
+
+> - Click the "Knit" button (above) to create an .html file
+> - Open the html file in your internet browser to view
+> - Go to `File > Print` and print your .html file to a .pdf
+> - (or knit to PDF)
+> - Upload the .pdf file to Canvas
+
+
+---
+
+### Question 1 
+
+We will analyze some data from a famous case of alleged gender discrimination in admission to graduate programs at UC Berkeley in 1973. The three variables are `Admit` (Admitted, Rejected), `Gender` (Male, Female), and `Dept` (Departments A, B, C, D, E, F). First, create a dichotomous outcome variable $y$ that is 1 if Admit=="Admitted", 0 otherwise.
+
+1a. (2 pts) Predict $y$ from Gender using a logistic regression. Is the effect significant? Interpret the effect: what is the odds ratio for admission to graduate school for women compared to men? Compute the predicted probability of admission for women and for men.
+
+```{R}
+adm<-read.csv("http://www.nathanielwoodward.com/admissions.csv")
+library(dplyr)
+library(MASS)
+library(ggplot2)
+library(lmtest)
+admitted<-adm%>%transmute(X=X,
+                          Gender=Gender,
+                          Dept=Dept,
+                          outcome=Admit,
+                          y=as.numeric(Admit=="Admitted"))
+head(admitted)
+summary(admitted)
+odds<-function(p)p/(1-p)
+p<-seq(0/1, by =.1)
+cbind(p, odds=odds(p))%>%round(4)
+logit<-function(p)log(odds(p))
+cbind(p, odds=odds(p),logit=logit(p))%>%round(4)
+
+fit<-glm(y~Gender,data=admitted,family=binomial(link="logit"))
+summary(fit)
+coeftest(fit)
+exp(-0.830486)
+exp(coef(fit))
+1/1.84107
+ 
+ predict(fit,newdata = data.frame(Gender="Female"),type = "response")
+ predict(fit,newdata = data.frame(Gender="Male"),type = "response")
+
+
+```
+*For every 1 unit increase in Women admitted there is 0.436 chance of Males being admitted.This effect is signifcant because the p-value is less than 0.05.The odds ratio for admission into graduate school for men compared to women is 1.841 times. Women have 0.543 odds ratio when compared to men.Women have 0.3035 probability of getting into graduate school and Males have a 0.4452 probability of getting into graduate school.* 
+
+1b. (2 pts) Now predict $y$ (admission) from Dept using a logistic regression. Interpret the overall pattern of results. For which departments are odds of admission higher than A? Which departments are the most selective? The least?
+
+```{R}
+fit2<-glm(y~Dept,data=admitted,family=binomial(link="logit"))
+summary(fit2)
+coeftest(fit2)
+exp(coef(fit2))
+
+table(admitted$y,admitted$Dept)
+A<-(601/933)/(332/933)
+B<-(370/585)/(215/585)
+C<-(322/918)/(596/918)
+D<-(269/792)/(523/792)
+E<-(147/584)/(437/584)
+F<-(46/714)/(688/714)
+
+B/A
+C/A
+D/A
+E/A
+F/A
+
+
+```
+
+*The results show that most selective departmens are those with the smallest odds ratio, D,E,F. Those with the higher odds ratio, Dept A,B, C, are less selective. No department has a higher odds ratio than A. * 
+
+1c. (2 pts) Now rerun the model but add `Dept` (Department of graduate program) as a predictor. Interpret the coefficient for `Gender` now (note there is no interaction, so the effect doesn't depend on the level of `Dept`). Controlling for Department, is there a significant effect of Gender on admissions? What is the odds ratio? What can you say about departments A and B compared to the others (in terms of odds/probability of admission; relevel if need be)?
+
+```{R}
+admitted$predictor<-admitted$Dept
+fit3<-glm(y~predictor, family= binomial(link = "logit"), data=admitted)
+coeftest(fit3)
+admitted$prob<- predict(fit3, type = "response")
+summary(fit3)
+coeftest(fit3)
+exp(coef(fit3))
+
+```
+
+*For every 1-unit increase in feamles odds of males getting into graduate shcool increase by 0.099870. Controlling for department gender is no longer significantly different. For both Men and Women the odds of getting into department A or B are significantly higher than getting into other departments.The probabilty of women getting into any department is 1.255303 times higher than males.  *
+
+1d. (2 pts) OK, now add the interaction of Gender and Department as you predict $y$ (admissions), to get a fuller picture. Compute the odds ratio for admission (Male vs. Female) in each department (A through F). Which departments favor Male applicants (i.e., higher odds of admission for Males)?
+
+```{R}
+fullfit<-glm(y~Gender*Dept,data=admitted,family=binomial(link = "logit"))
+summary(fullfit)
+coef(fullfit)
+exp(coef(fullfit))->fullfitodds
+((fullfitodds)/(1+fullfitodds))->fullfitprob
+((fullfitprob)/(1-fullfitprob))
+```
+
+*Departments A, B,E, and F, favor more applicants more. Males have higher odds of getting into those 4 deparmtnets than females. *
+
+1e. (2 pts) Take the admit dataset and, using dplyr functions, create a table with counts of applicants of each Gender in each Department (e.g., number of males who applied to department A) and also the percent of applicants admitted of each Gender in each Department. Sort descending by the count variable. In terms of selectivity, what kinds of departments did the majority of women apply to? What about the majority of men? Skim through the wikipedia article about Simpson's paradox (https://en.wikipedia.org/wiki/Simpsons_paradox) to get a better idea of what is going on here!
+
+```{R}
+library(dplyr)
+newadm<-adm%>%add_count(Dept,Gender)
+newadm=mutate(newadm,percent_count=n/sum(n)*100)
+```
+*Females tended to apply to Dept C the most, with Dept D,E, and F having similar apply percentages for females that were all less the Dept C. Males tended to apply to Dept A the most, with Dept B being the next most applied to, and C, D, F all having similar apply percentages for males that were less than A and B. *
+
+## Question 2
+
+Load the starswars data (from the dplyr package). Remove all NAs from the variables `mass`, `height`, and `species`.  Create a binary numeric variable $y$: 1 if species is Human, 0 otherwise. Use this modified dataset for the remaining questions.
+
+2a (3 pts) Predict the dichotomous Human indicator (`y`) from `height` using a logistic regression. Briefly interpret. Plot the ROC curve and compute the AUC. Create a plot of the logistic regression showing predicted probability of being Human by height. Color points by predicted human vs predicted not.
+
+```{R}
+library(ggplot2)
+library(dplyr)
+install.packages("tidyverse")
+library(tidyverse)
+starwars1 <- starwars%>%drop_na("mass", "height", "species")
+starwars1 <- starwars1 %>% transmute(name = name,
+height = height,
+mass = mass,
+hair_color = hair_color,
+skin_color = skin_color,
+eye_color = eye_color,
+birth_year = birth_year,
+gender = gender,
+homeworld = homeworld,
+species = species,
+films = films,
+vehicles = vehicles,
+starships = starships,
+outcome = species,
+y=as.numeric(species=="Human"))
+
+fit2a<-glm(y~height,data=starwars1,family=binomial(link="logit"))
+summary(fit2a)
+exp(coef(fit2a))
+
+library(plotROC)
+ROC2a <- ggplot(starwars1)+geom_roc(aes(d=y,m=height),n.cuts=0)
+ROC2a
+calc_auc(ROC2a)
+log_res <- ggplot(starwars1, aes(height,y))+geom_point(aes(color=y),alpha=.5,size=3)+
+geom_rug(aes(color=y),sides="right")+geom_hline(yintercept=.5)
+log_res
+```
+
+*Through obserivng the fit, it can be seen that height is not a signficant indicator of being human.The AUC was calculated to be 0.4924. *
+
+2b. (2 pts) Predict the Human indicator variable (`y`) from `height` and `mass` (no interaction). Discuss the output briefly (you do not have to interpret any coeficients). Compute Accuracy, Sensitivity, and Specificity. Plot the ROC curve and compute the AUC.
+
+```{R}
+library(tidyverse)
+fit2b <- glm(y ~ height + mass, data = starwars1, family = "binomial")
+coeftest(fit2b)
+predict(fit2b)
+prediction <- predict(fit2b, data = starwars1, type = "response")
+table(truth = starwars1$y, prediction = prediction) %>% addmargins
+table 
+
+ROC2b <- ggplot(starwars1)+geom_roc(aes(d=y, m=prediction), n.cuts=0)
+ROC2b
+calc_auc(ROC2b)
+```
+
+*The output indicates that when mass is constant, height is not a significant indicator of being human. As well when height is constant, mass is not a significant indicator of being human. The acuracy here os 0.621 while sensitivity is 0, and specificity is 1. The AUC was found to be 0.4697*
+
+2c. (3 pts) Predict this variable from the interaction of height and mass. Be sure to center your variables first, and save them to the starwars dataset as `mass_c` and `height_c`. Discuss the output. Compute Accuracy, Sensitivity, and Specificity. Plot the ROC curve and calculate the AUC. Compare the AUC with that of the main-effects model in 2b.
+
+```{R}
+
+mass_c <- starwars1$mass - mean(starwars1$mass)
+height_c <- starwars1$height - mean(starwars1$height)
+fit2c <- glm(y ~ height_c * mass_c, data = starwars1, family = "binomial")
+coeftest(fit2c)
+probwars3 <- predict(fit2c, type = "response")
+predwars3 <- ifelse(probwars3 > 0.5, 1, 0)
+table(prediction = predwars3, truth = starwars1$y) %>% addmargins
+table
+ROC2c <- ggplot(starwars1) + geom_roc(aes(d = y, m = predwars3),
+n.cuts = 0)
+ROC2c
+calc_auc(ROC2c)
+```
+
+*The output shows that there is a significant interaction between height and mass. For the interaction, the accuracy was found to be 0.534, the sensitivity was 0.2727, specificity was 0.694, and the AUC was 0.4835. This AUC was higher than that of the main-effect model in 2b, showing that this model was better at distinguishing humans from nonhumans.*
+
+2d. (2 pts) We want to visualize the interaction, but it is continuous! We can get around this by setting mass_c to the mean (0) and plus/minus one standard deviation and then looking at the effect of height on the probability of being human. Below, in the code given, I take the starwars dataset and I duplicate it three times: to one, I add a column with `mass_c=0`, to another, I add `mass_c=sd(mass)`, and to the third I add `mass_c=-sd(mass)`. I stack them all on top of each other and add a label (`mass_cat`). Use this new dataset and `predict(..., newdata=starwars_new, type="response")` to get predicted probabilities from your interaction model, and then use ggplot to plot those predicted probabilities against height (use geom_line and set `color=mass_cat`). What do you see?
+
+```{R}
+## Code to get you started on 2d
+starwars_new<-bind_rows(mutate(starwars1,mass_c=0),
+                     mutate(starwars1,mass_c=sd(mass)),
+                     mutate(starwars1,mass_c=-sd(mass)))
+
+starwars_new<-starwars_new%>%
+  mutate(mass_cat=c(rep("mean",nrow(starwars1)),
+                    rep("mean+1sd",nrow(starwars1)),
+                    rep("mean-1sd",nrow(starwars1))))
+
+
+probability4<- predict(fit2b, newdata = starwars_new, type = "response")
+ggplot(starwars_new, aes(height, probability4))+ geom_line(aes(color = mass_cat), alpha = .5, size = 3)
+```
+*The interactions show that height and mass do have interaction.*
+
+```{R, echo=F}
+## DO NOT DELETE THIS BLOCK!
+sessionInfo()
+Sys.time()
+Sys.info()
+```

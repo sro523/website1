@@ -1,0 +1,46 @@
+]0;~/Desktop/website1[?1034h(base) Sydneys-MacBook-Pro:website1 sydro$ ls
+config.toml	index.Rmd	themes
+content		public		website1.Rproj
+data		static
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ cd content[K[K[K[K[K[K[Kthemes/
+]0;~/Desktop/website1/themes(base) Sydneys-MacBook-Pro:themes sydro$ ls
+hugo-sustain
+]0;~/Desktop/website1/themes(base) Sydneys-MacBook-Pro:themes sydro$ cd hugo-sustain/
+]0;~/Desktop/website1/themes/hugo-sustain(base) Sydneys-MacBook-Pro:hugo-sustain sydro$ ls
+LICENSE.md	exampleSite	static
+README.md	images		theme.toml
+archetypes	layouts
+]0;~/Desktop/website1/themes/hugo-sustain(base) Sydneys-MacBook-Pro:hugo-sustain sydro$ cd exampleSite/
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite(base) Sydneys-MacBook-Pro:exampleSite sydro$ ls
+config.toml	data
+content		static
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite(base) Sydneys-MacBook-Pro:exampleSite sydro$ cd static/
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static(base) Sydneys-MacBook-Pro:static sydro$ ls
+img
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static(base) Sydneys-MacBook-Pro:static sydro$ cd img/
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static/img(base) Sydneys-MacBook-Pro:img sydro$ ls
+help.png
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static/img[?1034h(base) Sydneys-MacBook-Pro:img sydro$ [K(base) Sydneys-MacBook-Pro:img sydro$ pip install pandas
+Requirement already satisfied: pandas in /Users/sydro/opt/anaconda3/lib/python3.7/site-packages (0.25.1)
+Requirement already satisfied: numpy>=1.13.3 in /Users/sydro/opt/anaconda3/lib/python3.7/site-packages (from pandas) (1.17.2)
+Requirement already satisfied: pytz>=2017.2 in /Users/sydro/opt/anaconda3/lib/python3.7/site-packages (from pandas) (2019.3)
+Requirement already satisfied: python-dateutil>=2.6.1 in /Users/sydro/opt/anaconda3/lib/python3.7/site-packages (from pandas) (2.8.0)
+Requirement already satisfied: six>=1.5 in /Users/sydro/opt/anaconda3/lib/python3.7/site-packages (from python-dateutil>=2.6.1->pandas) (1.12.0)
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static/img(base) Sydneys-MacBook-Pro:img sydro$ [K(base) Sydneys-MacBook-Pro:img sydro$ pwd
+/Users/sydro/Desktop/website1/themes/hugo-sustain/exampleSite/static/img
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static/img(base) Sydneys-MacBook-Pro:img sydro$ cd ..
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite/static(base) Sydneys-MacBook-Pro:static sydro$ cd ..
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite(base) Sydneys-MacBook-Pro:exampleSite sydro$ pwd
+/Users/sydro/Desktop/website1/themes/hugo-sustain/exampleSite
+]0;~/Desktop/website1/themes/hugo-sustain/exampleSite(base) Sydneys-MacBook-Pro:exampleSite sydro$ cd ..
+]0;~/Desktop/website1/themes/hugo-sustain(base) Sydneys-MacBook-Pro:hugo-sustain sydro$ cd ..
+]0;~/Desktop/website1/themes(base) Sydneys-MacBook-Pro:themes sydro$ powd
+bash: powd: command not found
+]0;~/Desktop/website1/themes(base) Sydneys-MacBook-Pro:themes sydro$ pwd
+/Users/sydro/Desktop/website1/themes
+]0;~/Desktop/website1/themes(base) Sydneys-MacBook-Pro:themes sydro$ cd ..
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ ls
+config.toml	content		index.Rmd	public		static		themes		website1.Rproj
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git init
+Initialized empty Git repository in /Users/sydro/Desktop/website1/.git/
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576385929008.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4001911647",
+    "id" : "EF1A1F6C",
+    "lastKnownWriteTime" : 1576446233,
+    "last_content_update" : 1576446233085,
+    "path" : "~/Desktop/website1/content/blog/2019-12-14-my-favorite-python.Rmd",
+    "project_path" : "content/blog/2019-12-14-my-favorite-python.Rmd",
+    "properties" : {
+        "cursorPosition" : "39,1",
+        "scrollLine" : "21"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Sydney Ortiz" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project 2~Women&#39;s World Cup</title>
+    <meta name="generator" content="Hugo 0.61.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project2/">Project 2~Women&#39;s World Cup</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<p><em>This data set includes information on the Women’s World Cup from 1991-2019. The variables consist of Team’s(categorical), scores(numeric), country(categorical), year(numeric), round(categorical),team_yearly_id(numeric), team_num(numeric) and win status(categorical).The intention of this data analysis is to see if what variables can predict the overall winner of the Women’s World Cup each year.</em></p>
+<pre class="r"><code>#install.packages(&quot;plotROC&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+wwc_outcomes &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/wwc_outcomes.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   year = col_double(),
+##   team = col_character(),
+##   score = col_double(),
+##   round = col_character(),
+##   yearly_game_id = col_double(),
+##   team_num = col_double(),
+##   win_status = col_character()
+## )</code></pre>
+<pre class="r"><code>codes &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/codes.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   country = col_character(),
+##   team = col_character()
+## )</code></pre>
+<pre class="r"><code>newdata&lt;-dplyr::left_join(wwc_outcomes, codes, by = &quot;team&quot;)
+head(newdata)</code></pre>
+<pre><code>## # A tibble: 6 x 8
+##    year team  score round yearly_game_id team_num win_status country    
+##   &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      
+## 1  1991 CHN       4 Group              1        1 Won        China PR   
+## 2  1991 NOR       0 Group              1        2 Lost       Norway     
+## 3  1991 DEN       3 Group              2        1 Won        Denmark    
+## 4  1991 NZL       0 Group              2        2 Lost       New Zealand
+## 5  1991 JPN       0 Group              3        1 Lost       Japan      
+## 6  1991 BRA       1 Group              3        2 Won        Brazil</code></pre>
+<pre class="r"><code>library(mvtnorm)
+library(ggExtra)
+library(tidyr)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.2.1     ✓ dplyr   0.8.3
+## ✓ tibble  2.1.3     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.4.0
+## ✓ purrr   0.3.3</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>man1&lt;-manova(cbind(score,yearly_game_id,year,team_num)~win_status,data=newdata)
+summary(man1)</code></pre>
+<pre><code>##             Df  Pillai approx F num Df den Df    Pr(&gt;F)    
+## win_status   2 0.45671   41.653      8   1126 &lt; 2.2e-16 ***
+## Residuals  565                                             
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man1)</code></pre>
+<pre><code>##  Response score :
+##              Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## win_status    2  688.95  344.48  185.08 &lt; 2.2e-16 ***
+## Residuals   565 1051.61    1.86                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response yearly_game_id :
+##              Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## win_status    2   2197 1098.44  7.0077 0.0009856 ***
+## Residuals   565  88562  156.75                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response year :
+##              Df Sum Sq Mean Sq F value Pr(&gt;F)
+## win_status    2    174  86.958  1.0155 0.3629
+## Residuals   565  48380  85.628               
+## 
+##  Response team_num :
+##              Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## win_status    2   7.627  3.8135  16.035 1.685e-07 ***
+## Residuals   565 134.373  0.2378                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>man2&lt;-manova(cbind(score,yearly_game_id,year,team_num)~team,data=newdata)
+summary(man2)</code></pre>
+<pre><code>##            Df  Pillai approx F num Df den Df    Pr(&gt;F)    
+## team       35 0.55817    2.465    140   2128 &lt; 2.2e-16 ***
+## Residuals 532                                             
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man2)</code></pre>
+<pre><code>##  Response score :
+##              Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## team         35  287.04  8.2011  3.0017 5.393e-08 ***
+## Residuals   532 1453.52  2.7322                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response yearly_game_id :
+##              Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## team         35   7751  221.45  1.4193  0.059 .
+## Residuals   532  83008  156.03                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response year :
+##              Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## team         35  12045  344.14  5.0147 &lt; 2.2e-16 ***
+## Residuals   532  36509   68.63                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response team_num :
+##              Df  Sum Sq Mean Sq F value Pr(&gt;F)
+## team         35  10.237 0.29248  1.1809 0.2233
+## Residuals   532 131.763 0.24768</code></pre>
+<pre class="r"><code>man3&lt;-manova(cbind(score,yearly_game_id,year,team_num)~round,data=newdata)
+summary(man3)</code></pre>
+<pre><code>##            Df  Pillai approx F num Df den Df    Pr(&gt;F)    
+## round       5 0.64377    21.56     20   2248 &lt; 2.2e-16 ***
+## Residuals 562                                             
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man3)</code></pre>
+<pre><code>##  Response score :
+##              Df  Sum Sq Mean Sq F value Pr(&gt;F)
+## round         5    7.75  1.5493  0.5025 0.7745
+## Residuals   562 1732.82  3.0833               
+## 
+##  Response yearly_game_id :
+##              Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## round         5  46638  9327.6  118.81 &lt; 2.2e-16 ***
+## Residuals   562  44121    78.5                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response year :
+##              Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## round         5   3696  739.11  9.2598 1.743e-08 ***
+## Residuals   562  44858   79.82                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response team_num :
+##              Df Sum Sq Mean Sq F value Pr(&gt;F)
+## round         5      0 0.00000       0      1
+## Residuals   562    142 0.25267</code></pre>
+<pre class="r"><code>newdata%&gt;%group_by(country)%&gt;%summarize(mean(score),mean(year))</code></pre>
+<pre><code>## # A tibble: 36 x 3
+##    country        `mean(score)` `mean(year)`
+##    &lt;chr&gt;                  &lt;dbl&gt;        &lt;dbl&gt;
+##  1 Argentina              0.556        2010.
+##  2 Australia              1.42         2008.
+##  3 Brazil                 1.94         2005.
+##  4 Cameroon               1.5          2017 
+##  5 Canada                 1.26         2008.
+##  6 Chile                  0.667        2019 
+##  7 China PR               1.64         2004.
+##  8 Chinese Taipei         0.5          1991 
+##  9 Colombia               0.571        2013.
+## 10 Costa Rica             1            2015 
+## # … with 26 more rows</code></pre>
+<p><em>None of the MANOVA test or univariate ANOVA test were signficant leading us to thus, meaning for at least one DV, at least one countries win_status, team,round mean is different between the categorical variables. If the MANONA test were significant then additonal to the 1 MANOVA test would have been performed, 3 ANOVA test would have been performed, 3x12 t-test would have been performed, and 3x5 t-test would have been performed, a total of 55 test. To calculate the bonferroni correction, we divide alpha by the number of test that would have been run, 0.05/55, the new signficance value would be 0.00091. Assumptions for a MANOVA are random samples and independent observations. Multivariate normality of DVs, homogeneity of withing-group covarience matrices, linear relation among DVs, no extreme univariate or multivariate outliers, no multicollineraity. It is highly unlikely that these assumptions were met for the data that was used.</em></p>
+<pre class="r"><code>#install.packages(&quot;permute&quot;)
+#install.packages(&quot;lattice&quot;)
+library(vegan)</code></pre>
+<pre><code>## Loading required package: permute</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## This is vegan 2.5-6</code></pre>
+<pre class="r"><code>library(dplyr)
+library(permute)
+library(tidyverse)
+library(lattice)
+library(tidyselect)
+
+
+#PERMANOVA
+library(vegan)
+library(tidyverse)
+dists&lt;-newdata%&gt;%select(score, year)%&gt;%dist()
+adonis(dists~team_num,data=newdata)</code></pre>
+<pre><code>## 
+## Call:
+## adonis(formula = dists ~ team_num, data = newdata) 
+## 
+## Permutation: free
+## Number of permutations: 999
+## 
+## Terms added sequentially (first to last)
+## 
+##            Df SumsOfSqs MeanSqs F.Model     R2 Pr(&gt;F)
+## team_num    1        60  60.255 0.67891 0.0012  0.425
+## Residuals 566     50234  88.753         0.9988       
+## Total     567     50294                 1.0000</code></pre>
+<pre class="r"><code>table(newdata$team_num)</code></pre>
+<pre><code>## 
+##   1   2 
+## 284 284</code></pre>
+<pre class="r"><code>#Observed F
+SST&lt;- sum(dists^2)/566
+SSW&lt;-newdata%&gt;%group_by(team_num)%&gt;%select(score,year)%&gt;%
+ do(d=dist(.[2:3],&quot;euclidean&quot;))%&gt;%ungroup()%&gt;%
+ summarize(sum(d[[1]]^2)/284 + sum(d[[2]]^2)/284)%&gt;%pull</code></pre>
+<pre><code>## Adding missing grouping variables: `team_num`</code></pre>
+<pre class="r"><code>F_obs&lt;-((SST-SSW)/2)/(SSW/566)
+F_obs</code></pre>
+<pre><code>## [1] 1.340654</code></pre>
+<pre class="r"><code>#Null distribution and test statistic 
+Fs&lt;-replicate(1000,{ 
+new&lt;-newdata%&gt;%mutate(team_num=sample(team_num)) 
+SST2&lt;- sum(dists^2)/566
+SSW2&lt;-new%&gt;%group_by(team_num)%&gt;%select(score,year)%&gt;%
+do(d=dist(.[2:3],&quot;euclidean&quot;))%&gt;%ungroup()%&gt;%
+ summarize(sum(d[[1]]^2)/284 + sum(d[[2]]^2)/284)%&gt;%pull
+((SST2-SSW2)/2)/(SSW2/566)})</code></pre>
+<pre><code>## Adding missing grouping variables: `team_num`</code></pre>
+<pre><code>## Adding missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`Adding missing grouping variables: `team_num`Adding
+## missing grouping variables: `team_num`Adding missing grouping variables:
+## `team_num`Adding missing grouping variables: `team_num`Adding missing grouping
+## variables: `team_num`</code></pre>
+<pre class="r"><code>#p value 
+mean(Fs&gt;F_obs)</code></pre>
+<pre><code>## [1] 0.442</code></pre>
+<pre class="r"><code>{hist(Fs,prob = T); abline(v=F_obs, col=&quot;red&quot;, add=T)}</code></pre>
+<pre><code>## Warning in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): &quot;add&quot; is
+## not a graphical parameter</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(newdata,aes(score,fill=team_num))+geom_histogram(bins=7)+facet_wrap(~team_num
+,ncol=2)+
+  ggtitle(&quot;Score vs count&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-3-2.png" width="672" /> <em>Null hypothesis: The year and the score of games during the world cup does not differ between team numbers. Alternative hypothesis: The year and the score of games during the world cup do differ team numbers.The results of the PERMANOVA did reveal that there is a signficiant difference between score and year between team number.The adonis p-value= 0.0012,calculated p-value=[1] 0.383 The observed F= 1.340654, which is greater than my null distribution of F . </em></p>
+<pre class="r"><code>library(lmtest)</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>library(sandwich)
+
+fit8&lt;- lm(score ~ win_status*year, data = newdata)
+summary(fit8)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ win_status * year, data = newdata)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.1109 -0.5161 -0.4540  0.5360 10.6326 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)         5.530463  18.059565   0.306  0.75954   
+## win_statusTie      83.002253  47.149426   1.760  0.07888 . 
+## win_statusWon      71.896714  25.540081   2.815  0.00505 **
+## year               -0.002514   0.008998  -0.279  0.78002   
+## win_statusTie:year -0.040890   0.023475  -1.742  0.08208 . 
+## win_statusWon:year -0.034662   0.012725  -2.724  0.00665 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.343 on 562 degrees of freedom
+## Multiple R-squared:  0.4177, Adjusted R-squared:  0.4126 
+## F-statistic: 80.64 on 5 and 562 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>#Mean centering of numberic variables
+
+newdata$year_c&lt;-newdata$year-mean(newdata$year)
+newdata$score_c&lt;-newdata$score-mean(newdata$score)
+newdata$yearly_game_id_c&lt;-newdata$yearly_game_id-mean(newdata$yearly_game_id)
+newdata$team_num_c&lt;-newdata$team_num-mean(newdata$team_num)
+
+#Multiple Regression Test with Interactions of win_status&amp;country aganist score_c.
+fit8.2 &lt;- lm(score_c ~ win_status*year_c, data = newdata)
+summary(fit8.2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score_c ~ win_status * year_c, data = newdata)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.1109 -0.5161 -0.4540  0.5360 10.6326 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          -1.130805   0.084612 -13.365  &lt; 2e-16 ***
+## win_statusTie         0.927518   0.190969   4.857 1.55e-06 ***
+## win_statusWon         2.322530   0.119659  19.410  &lt; 2e-16 ***
+## year_c               -0.002514   0.008998  -0.279  0.78002    
+## win_statusTie:year_c -0.040890   0.023475  -1.742  0.08208 .  
+## win_statusWon:year_c -0.034662   0.012725  -2.724  0.00665 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.343 on 562 degrees of freedom
+## Multiple R-squared:  0.4177, Adjusted R-squared:  0.4126 
+## F-statistic: 80.64 on 5 and 562 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>ggplot(newdata, aes(x=win_status, y=score_c,group=year_c))+geom_point(aes(color=year_c))+
+geom_smooth(method=&quot;lm&quot;,formula=y~1,se=F,fullrange=T,aes(color=year_c))+
+  ggtitle(&quot;Win Status vs Score_c groubed by year_c&quot;)+
+  ggtitle(&quot;Average Score vs Win_Status&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>mean&lt;-predict(fit8.2,newdata)
+ggplot(newdata,aes(win_status,year))+geom_point()+geom_line(data=newdata,aes(y=mean))+
+  ggtitle(&quot;Predicted win status by year&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code># Check for Linearity and Homoskedasticity
+
+resids&lt;-fit8.2$residuals
+fitvals&lt;-fit8.2$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+geom_hline(yintercept=0, color=&#39;red&#39;)+
+  ggtitle(&quot;Assumption check for linearity&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<pre class="r"><code>ggplot()+geom_histogram(aes(resids), bins=20)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
+<pre class="r"><code>ks.test(resids, &quot;pnorm&quot;, mean=0, sd(resids))</code></pre>
+<pre><code>## Warning in ks.test(resids, &quot;pnorm&quot;, mean = 0, sd(resids)): ties should not be
+## present for the Kolmogorov-Smirnov test</code></pre>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  resids
+## D = 0.16812, p-value = 2.276e-14
+## alternative hypothesis: two-sided</code></pre>
+<pre class="r"><code>bptest(fit8.2)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  fit8.2
+## BP = 25.418, df = 5, p-value = 0.0001157</code></pre>
+<pre class="r"><code>ggplot()+geom_histogram(aes(resids), bins=20)+
+  ggtitle(&quot;Assumptiom check for Homoskedasticity&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-5.png" width="672" /></p>
+<pre class="r"><code>#standard errors
+summary(fit8.2)$coef[,1:2]</code></pre>
+<pre><code>##                          Estimate Std. Error
+## (Intercept)          -1.130805426 0.08461162
+## win_statusTie         0.927518185 0.19096940
+## win_statusWon         2.322530249 0.11965889
+## year_c               -0.002514368 0.00899819
+## win_statusTie:year_c -0.040890220 0.02347484
+## win_statusWon:year_c -0.034662356 0.01272536</code></pre>
+<pre class="r"><code># Recompute of Regression Results with Robust Standard Errors
+
+library(sandwich)
+library(lmtest)
+coeftest(fit8, vcov = vcovHC(fit8.2))[,1:2]</code></pre>
+<pre><code>##                Estimate Std. Error
+## (Intercept)    5.530463 0.04080822
+## win_statusTie 83.002253 0.12074617
+## win_statusWon 71.896714 0.12406500</code></pre>
+<pre class="r"><code>#proportion of variation explained by the model
+
+decimalvalue&lt;-(sum((newdata$score-mean(newdata$score))^2)-sum(fit8.2$residuals^2))/sum((newdata$score-mean(newdata$score))^2)
+decimalvalue*100</code></pre>
+<pre><code>## [1] 41.77407</code></pre>
+<pre class="r"><code>#Main effects
+fit&lt;-lm(score ~ win_status + year, data=newdata)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = score ~ win_status + year, data = newdata)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.9872 -0.6750 -0.3027  0.6027 10.4471 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   44.06316   12.32396   3.575 0.000380 ***
+## win_statusTie  0.89762    0.18936   4.740  2.7e-06 ***
+## win_statusWon  2.32937    0.12032  19.360  &lt; 2e-16 ***
+## year          -0.02171    0.00614  -3.536 0.000439 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.351 on 564 degrees of freedom
+## Multiple R-squared:  0.4089, Adjusted R-squared:  0.4058 
+## F-statistic: 130.1 on 3 and 564 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>lrtest(fit, fit8.2)</code></pre>
+<pre><code>## Likelihood ratio test
+## 
+## Model 1: score ~ win_status + year
+## Model 2: score_c ~ win_status * year_c
+##   #Df  LogLik Df Chisq Pr(&gt;Chisq)  
+## 1   5 -974.66                      
+## 2   7 -970.39  2 8.533    0.01403 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><em>When score increases by one point, there is a 0.927518 increase that the game ended in a tie, and 2.322530 increase that the game ended in a win. For every one unit increase in year there is a decrease in points scored -0.0025. For every score increase in a game and increase in year, the likelihood that the game was lost decreases by 1.333 (interaction). Assumptions of linearity, normality, and homoskedasticity were not met according to graphs/hypothesis tests. Robust standard errors were overall greater than original standard errors. The model explains 0.41.77 (41.77%) of variation. Likelihood ratio test shows the interaction model and the model without the interaction are both not significant, but the interaction model being a better model to use. </em></p>
+<pre class="r"><code>samp_distn&lt;-replicate(5000, {
+ boot_dat&lt;-newdata[sample(nrow(newdata),replace=TRUE),]
+ fit3&lt;-lm(score_c~ win_status*year_c,data=boot_dat)
+ coef(fit3)
+})
+
+samp_distn%&gt;%t%&gt;%as.data.frame%&gt;%summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept) win_statusTie win_statusWon      year_c win_statusTie:year_c
+## 1  0.04075384     0.1193798     0.1233086 0.004340668           0.01637453
+##   win_statusWon:year_c
+## 1           0.01312772</code></pre>
+<p><em>The bootstrapped standard errors are less than the original standard errors and less than the robust standard errors. </em></p>
+<pre class="r"><code>library(dplyr)
+library(MASS)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(lmtest)
+library(tidyverse)
+newdata2&lt;-newdata%&gt;%transmute(year=year,
+                              team=team,
+                              score=score,
+                              round=round,
+                      yearly_game_id=yearly_game_id,
+                              team_num=team_num,
+                              country=country,
+                              outcome=win_status,
+                  y=as.numeric(win_status==&quot;Won&quot;))
+
+
+library(lmtest)
+
+#logistic regression
+fit4&lt;-glm(y~round+score,data=newdata2,family=binomial(link=&quot;logit&quot;))
+coeftest(fit4)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##                           Estimate Std. Error z value  Pr(&gt;|z|)    
+## (Intercept)              -2.545296   0.700444 -3.6338 0.0002792 ***
+## roundGroup               -0.506413   0.677578 -0.7474 0.4548296    
+## roundQuarter Final        0.040581   0.744419  0.0545 0.9565257    
+## roundRound of 16          0.487409   0.802704  0.6072 0.5437125    
+## roundSemi Final           0.038652   0.832365  0.0464 0.9629620    
+## roundThird Place Playoff  0.391502   0.949488  0.4123 0.6800980    
+## score                     1.817430   0.151911 11.9638 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>#coefficients
+exp(coef(fit4))</code></pre>
+<pre><code>##              (Intercept)               roundGroup       roundQuarter Final 
+##               0.07844986               0.60265332               1.04141592 
+##         roundRound of 16          roundSemi Final roundThird Place Playoff 
+##               1.62809220               1.03940917               1.47920069 
+##                    score 
+##               6.15601679</code></pre>
+<pre class="r"><code>#confusion matrix 
+newdata2$predicted&lt;-predict(fit4, data=newdata2, type = &quot;response&quot;)
+table(predict=as.numeric(newdata2$predicted&gt;.5),truth=newdata2$y)%&gt;%addmargins</code></pre>
+<pre><code>##        truth
+## predict   0   1 Sum
+##     0   273  55 328
+##     1    43 197 240
+##     Sum 316 252 568</code></pre>
+<pre class="r"><code>#accuracy
+(273+197)/568</code></pre>
+<pre><code>## [1] 0.8274648</code></pre>
+<pre class="r"><code>#sensitivity 
+197/240</code></pre>
+<pre><code>## [1] 0.8208333</code></pre>
+<pre class="r"><code>#specificity
+273/328</code></pre>
+<pre><code>## [1] 0.8323171</code></pre>
+<pre class="r"><code>#PPV
+273/316</code></pre>
+<pre><code>## [1] 0.8639241</code></pre>
+<pre class="r"><code>#plot
+library(plotROC)
+data &lt;- newdata2 %&gt;% mutate(prob=predict(fit4,type=&quot;response&quot;),
+        prediction = ifelse(prob&gt;.5,1,0))
+ROC&lt;-ggplot(newdata2)+geom_roc(aes(d=truth,m=prob),n.cuts = 0)+geom_segment(aes(x=0,xend=1,
+y=0,yend=1),lty=2)
+  
+ggplot(newdata2,aes(round,score,predicted,color=score))+geom_line()+
+  ggtitle(&quot;Round vs score &quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>ROCplot&lt;-ggplot(newdata2)+geom_roc(aes(d=y,m=predicted), n.cuts=0)+
+ geom_segment(aes(x=0,xend=1,y=0,yend=1),lty=2)+ggtitle(&quot;ROC Plot&quot;)
+ROCplot</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>#AUC
+calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.9049817</code></pre>
+<pre class="r"><code>##CV
+class_diag&lt;-function(probs,truth){
+
+tab&lt;-table(factor(probs&gt;.5,levels=c(&quot;FALSE&quot;,&quot;TRUE&quot;)),truth)
+acc=sum(diag(tab))/sum(tab)
+sens=tab[2,2]/colSums(tab)[2]
+spec=tab[1,1]/colSums(tab)[1]
+ppv=tab[2,2]/rowSums(tab)[2]
+
+if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1
+
+ord&lt;-order(probs, decreasing=TRUE)
+probs &lt;- probs[ord]; truth &lt;- truth[ord]
+
+TPR=cumsum(truth)/max(1,sum(truth)) 
+FPR=cumsum(!truth)/max(1,sum(!truth))
+
+dup&lt;-c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+TPR&lt;-c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+
+n &lt;- length(TPR)
+auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+
+data.frame(acc,sens,spec,ppv,auc)
+}
+
+set.seed(1234)
+k=10
+
+data1&lt;-newdata2[sample(nrow(newdata2)),]
+folds&lt;-cut(seq(1:nrow(newdata2)),breaks=k,labels=F)
+
+diags&lt;-NULL
+for(i in 1:k){
+train&lt;-data1[folds!=i,]
+test&lt;-data1[folds==i,]
+truth&lt;-test$y
+fit6&lt;- glm(y~round+score,data=train,family=binomial(link=&quot;logit&quot;))
+probs&lt;- predict(fit6, newdata=test, type=&quot;response&quot;)
+diags&lt;-rbind(diags,class_diag(probs,truth))}
+
+apply(diags,2,mean)</code></pre>
+<pre><code>##       acc      sens      spec       ppv       auc 
+## 0.8237469 0.7820178 0.8576385 0.8105800 0.9044642</code></pre>
+<pre class="r"><code>##density of log-odd
+
+logit&lt;-predict(fit4)
+winstat &lt;-factor(newdata2$outcome, levels = c(&quot;Won&quot;,&quot;Lost&quot;))
+ggplot(newdata2, aes(logit,fill=as.factor(winstat)))+geom_density(alpha=0.3)+geom_vline(xintercept = 0, lty=2)+
+  ggtitle(&quot;log-it graph&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<p><em>For every point scored in the group round there is a 0.6027% increase in probablility that the team won and moved on to finals, for every point in the quarter final round there is a 1.041% increase in probablility that the team won and moved on to finals, for every point scored in round of 16 there is a 1.63% increase in probablility that the team won and moved on to finals, for every point scored in semi final round there is 1.04% increase in probablility that the team won and moved on to finals, and for every point scored in the third place playoff round there is a 1.48% increase in probablility that the team won and moved on to finals. Accuracy was 0.8274648, the proprotion of cases that were classified accuratley.Sensitivity was 0.821, the proprtion of cased that were classified 1 correctly. Specificity was 0.8323171 , the proportion of 0 cases that were classified correctly. The ppv was 0.864.The AUC is 0.905 meaning score_c, and round are good predictors of whether a game was won or lost. Results of the 10-fold CV showed accuracy of 0.824, sensitivity of 0.78, and recall of 0.81.</em></p>
+<p>– Using ggplot, plot density of log-odds (logit) by your binary outcome variable (3)</p>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 3.0-2</code></pre>
+<pre><code>## [1] 0.25</code></pre>
+<pre><code>## Warning in predict.lm(fit4, newdata = test): prediction from a rank-deficient
+## fit may be misleading
+
+## Warning in predict.lm(fit4, newdata = test): prediction from a rank-deficient
+## fit may be misleading
+
+## Warning in predict.lm(fit4, newdata = test): prediction from a rank-deficient
+## fit may be misleading
+
+## Warning in predict.lm(fit4, newdata = test): prediction from a rank-deficient
+## fit may be misleading
+
+## Warning in predict.lm(fit4, newdata = test): prediction from a rank-deficient
+## fit may be misleading</code></pre>
+<pre><code>## [1] 0.25</code></pre>
+<pre><code>## 4 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                         s0
+## (Intercept)     0.44366197
+## year            .         
+## team_num       -0.05228751
+## yearly_game_id  .</code></pre>
+<pre><code>## Warning in newdata2$y - yhat3: longer object length is not a multiple of shorter
+## object length</code></pre>
+<pre><code>## Warning in newdata2$y - yhat3: longer object length is not a multiple of shorter
+## object length
+
+## Warning in newdata2$y - yhat3: longer object length is not a multiple of shorter
+## object length
+
+## Warning in newdata2$y - yhat3: longer object length is not a multiple of shorter
+## object length
+
+## Warning in newdata2$y - yhat3: longer object length is not a multiple of shorter
+## object length</code></pre>
+<pre><code>## [1] 0.2607702</code></pre>
+<p><em>Categorical variables were excluded from lasso because x needed to be numeric. AUC is 0.3563 meaning that the reamining predictor variables are poor indicators if a team win or loses/ties a game during the women’s world cup.</em> Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

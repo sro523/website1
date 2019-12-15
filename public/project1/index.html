@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Sydney Ortiz" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project 1: Exploratory Data Analysis</title>
+    <meta name="generator" content="Hugo 0.61.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project1/">Project 1: Exploratory Data Analysis</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="skin-cancer-and-breast-cancer" class="section level2">
+<h2>Skin Cancer and Breast Cancer</h2>
+</div>
+<div id="data-wrangling-and-data-exploration" class="section level2">
+<h2>Data Wrangling and Data Exploration</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<pre class="r"><code>bcancer &lt;- read.csv(&quot;breastcancer.csv&quot;)
+scancer&lt;- read.csv(&quot;skincancer.csv&quot;)
+
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
+## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(reshape2)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;reshape2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     smiths</code></pre>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<p><em>Introduction: The two data sets I found were over breast cancrer and skin cancer. I obtained these data sets from the “Kaggle”. The two variables they had in common were age and sex. The skin cancer data set included variables that were important diagnostic categories within the realm of pigmented lesions. Additionally variables included age, sex, and how the lesions were confirmed. The breast cancer data set included variables that was focused more on the patient after cancer, including variables such as vitial status, days since they were last contacted from their docotros about the cancer, and survival. Additonally, the data included some variables that idetified the kind of breast cancer by different stages and the differernt clusters. These data sets were interesting to me because I am pre-medincine student and wanted data sets that were somehow related to the health field. I do not expect the data sets to have a lot in common but if the do I would expect them to have similar mean ages for those who have had either breast cancer or skin cancer.</em></p>
+</div>
+<div id="tidying" class="section level2">
+<h2>Tidying</h2>
+</div>
+<div id="joining" class="section level2">
+<h2>Joining</h2>
+<pre class="r"><code>colnames(bcancer)[colnames(bcancer)==&quot;Age.at.Initial.Pathologic.Diagnosis&quot;]&lt;- &quot;age&quot;
+scancer1&lt;- scancer%&gt;%mutate(sex=case_when(sex==&quot;male&quot; ~ &quot;MALE&quot;, sex==&quot;female&quot; ~ &quot;FEMALE&quot;))
+inner&lt;-inner_join(bcancer,scancer1, by = &quot;age&quot;)
+living&lt;-inner%&gt;% filter(Vital.Status==&quot;LIVING&quot;)</code></pre>
+<p>*For the breast cancer dataset I renamed the column “Age.at.Initial.Pathologic.Diagnosis” to “age” in order for the dataset to have a common name with the skin cancer data set. Additionally, both data sets had the common variable of sex, but the data within the columns were labled slighly differently, one was “FEMALE” and one was “female”. In order to fix this problem I set then equal to each other because they are the same data just labeled differently. I then performed an inner join in order to be able to further analysis the data sets. An inner join was chosen because it created the least amount of null values and the data that was dropped was nothing that could really be used to help better the data analysis.</p>
+<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.*</p>
+</div>
+<div id="dplyr" class="section level2">
+<h2>dplyr</h2>
+<pre class="r"><code>desc&lt;-living%&gt;%arrange(desc(age))</code></pre>
+<p><em>To organize the data I arranged the age in descening order.</em></p>
+<pre class="r"><code>trunk&lt;- desc%&gt;%
+  select(sex,age,Vital.Status,Days.to.Date.of.Last.Contact,localization, Converted.Stage)
+trunk2&lt;-trunk%&gt;%select(&quot;sex&quot; = sex, &quot;last contact&quot; = Days.to.Date.of.Last.Contact, &quot;age&quot;= age, &quot;localization&quot;=localization, &quot;stage&quot; = Converted.Stage)
+trunk3&lt;-trunk2%&gt;%mutate(sex=case_when(sex==&quot;FEMALE&quot; ~ &quot;F&quot;, sex==&quot;MALE&quot; ~ &quot;M&quot;))</code></pre>
+</div>
+<div id="i-selected-the-five-variables-that-i-thought-would-be-best-to-analyze-an-renamed-them-in-order-to-allow-the-column-names-to-be-shorter.-i-mutated-the-sex-column-so-male-would-turn-to-m-and-feamle-would-be-f-just-to-tidy-up-the-data-a-little-bit." class="section level2">
+<h2><em>I selected the five variables that I thought would be best to analyze an renamed them in order to allow the column names to be shorter. ##I mutated the sex column so male would turn to “m” and feamle would be “f”, just to tidy up the data a little bit.</em></h2>
+<pre class="r"><code>trunk2%&gt;%group_by(localization)%&gt;%
+  summarize(n())</code></pre>
+<pre><code>## # A tibble: 15 x 2
+##    localization    `n()`
+##    &lt;fct&gt;           &lt;int&gt;
+##  1 abdomen          1654
+##  2 acral               3
+##  3 back             2994
+##  4 chest             515
+##  5 ear                61
+##  6 face             1007
+##  7 foot              456
+##  8 genital            80
+##  9 hand              100
+## 10 lower extremity  3128
+## 11 neck              229
+## 12 scalp             168
+## 13 trunk            2275
+## 14 unknown           227
+## 15 upper extremity  1679</code></pre>
+</div>
+<div id="in-grouped-the-localization-of-the-skin-cancer-and-summarized-how-many-cases-were-in-each-location.-this-information-will-later-be-useful-when-further-analyzing-the-data." class="section level2">
+<h2><em>In grouped the localization of the skin cancer and summarized how many cases were in each location. This information ##will later be useful when further analyzing the data.</em></h2>
+<pre class="r"><code>cor(trunk3%&gt;%select(`last contact`, age), method = &quot;pearson&quot;, use = &quot;complete.obs&quot;)</code></pre>
+<pre><code>##              last contact        age
+## last contact    1.0000000 -0.1304065
+## age            -0.1304065  1.0000000</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(mean_age = mean(age))</code></pre>
+<pre><code>##   mean_age
+## 1  53.1449</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(sd_age = sd(age))</code></pre>
+<pre><code>##     sd_age
+## 1 10.96349</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(var_age =var(age))</code></pre>
+<pre><code>##    var_age
+## 1 120.1981</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(min_age = min(age))</code></pre>
+<pre><code>##   min_age
+## 1      30</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(max_age=max(age))</code></pre>
+<pre><code>##   max_age
+## 1      80</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(mean_contact = mean(`last contact`))</code></pre>
+<pre><code>##   mean_contact
+## 1     578.0361</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(sd_contact = sd(`last contact`))</code></pre>
+<pre><code>##   sd_contact
+## 1   496.9782</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(var_contact =var(`last contact`))</code></pre>
+<pre><code>##   var_contact
+## 1    246987.3</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(min_contact = min(`last contact`))</code></pre>
+<pre><code>##   min_contact
+## 1           0</code></pre>
+<pre class="r"><code>trunk3%&gt;%summarize(max_contact=max(`last contact`))</code></pre>
+<pre><code>##   max_contact
+## 1        1826</code></pre>
+<pre class="r"><code> trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(mean(age))</code></pre>
+<pre><code>##   mean(age)
+## 1  50.33541</code></pre>
+<pre class="r"><code> trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(sd(age))</code></pre>
+<pre><code>##    sd(age)
+## 1 8.891963</code></pre>
+<pre class="r"><code>  trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(var(age))</code></pre>
+<pre><code>##   var(age)
+## 1 79.06701</code></pre>
+<pre class="r"><code>   trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(max(age))</code></pre>
+<pre><code>##   max(age)
+## 1       65</code></pre>
+<pre class="r"><code>    trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(min(age))</code></pre>
+<pre><code>##   min(age)
+## 1       30</code></pre>
+<pre class="r"><code> trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(mean(`last contact`))</code></pre>
+<pre><code>##   mean(`last contact`)
+## 1             673.0874</code></pre>
+<pre class="r"><code> trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(sd(`last contact`))</code></pre>
+<pre><code>##   sd(`last contact`)
+## 1            366.249</code></pre>
+<pre class="r"><code>  trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(var(`last contact`))</code></pre>
+<pre><code>##   var(`last contact`)
+## 1            134138.3</code></pre>
+<pre class="r"><code>   trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(max(`last contact`))</code></pre>
+<pre><code>##   max(`last contact`)
+## 1                1072</code></pre>
+<pre class="r"><code>    trunk3%&gt;%filter(localization ==&quot;abdomen&quot; &amp; stage ==&quot;Stage IIA&quot;)%&gt;%
+  summarize(min(`last contact`))</code></pre>
+<pre><code>##   min(`last contact`)
+## 1                   0</code></pre>
+<p><em>Summarize was used to generte the mean, standard deviation, variation, minimum, an maximum values for the age of the patients and the last date contacted from the physicians. This was then used to compare with the mean, standard deviation, variation, minimum, an maximum values with the location of the abdomen and the stage of IIA.</em></p>
+<pre class="r"><code>ggplot(trunk3, aes(x=localization)) +
+geom_bar(aes(y=trunk3$age), stat=&quot;summary&quot;, fun.y=&quot;mean&quot;) +
+geom_errorbar(aes(y=trunk3$age), stat=&quot;summary&quot;, width = .2, fun.data=&quot;mean_se&quot;) +
+scale_y_continuous(name = &quot;Avg Age&quot;, breaks = c(25,30, 35, 40, 45, 50, 55, 60, 65, 70))+
+  ggtitle(&quot;Localization vs. Average Age&quot;)</code></pre>
+<p><img src="/Project1_files/figure-html/plot1-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(trunk3, aes(x=localization, y=age,color=stage))+geom_point(size=4,
+      alpha=0.5)+ggtitle(&quot;Localization by age&quot;)+labs(y=&quot;Age(years)&quot;)+theme(legend.position = &quot;bottom&quot;)+
+  theme(axis.text = element_text(colour = &quot;green&quot;))</code></pre>
+<p><img src="/Project1_files/figure-html/plot2-1.png" width="672" /></p>
+<pre class="r"><code>trunk3%&gt;%ggplot(aes(age,`last contact`,color=localization,
+                    shape=stage))+geom_point(size=4)+
+  ggtitle(&quot;Last Contact vs Age in years&quot;)</code></pre>
+<p><img src="/Project1_files/figure-html/plot2-2.png" width="672" /></p>
+<pre class="r"><code>install.packages(&quot;ggplot2&quot;, repos = &quot;http://cran.us.r-project.org&quot;)</code></pre>
+<pre><code>## 
+## The downloaded binary packages are in
+##  /var/folders/7n/4tgbsdzs4m76h84nzx8l2lkw0000gn/T//Rtmp4cUS7Z/downloaded_packages</code></pre>
+<pre class="r"><code>library(ggplot2)
+mergedata&lt;-trunk%&gt;%select(-Vital.Status,-sex)
+mergedata_nums&lt;-mergedata%&gt;%select_if(is.numeric)%&gt;%scale
+rownames(mergedata_nums)&lt;-mergedata$Name
+mergedata_pca&lt;-princomp(mergedata_nums)
+names(mergedata_pca)</code></pre>
+<pre><code>## [1] &quot;sdev&quot;     &quot;loadings&quot; &quot;center&quot;   &quot;scale&quot;    &quot;n.obs&quot;    &quot;scores&quot;  
+## [7] &quot;call&quot;</code></pre>
+<pre class="r"><code>summary(mergedata_pca, loadings = T)</code></pre>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2
+## Standard deviation     1.0631693 0.9324880
+## Proportion of Variance 0.5652033 0.4347967
+## Cumulative Proportion  0.5652033 1.0000000
+## 
+## Loadings:
+##                              Comp.1 Comp.2
+## age                           0.707  0.707
+## Days.to.Date.of.Last.Contact -0.707  0.707</code></pre>
+<pre class="r"><code>eigval&lt;-mergedata_pca$sdev^2
+varprop=round(eigval/sum(eigval),2)
+ggplot()+geom_bar(aes(y=varprop,x=1:2),stat=&quot;identity&quot;)+xlab(&quot;&quot;)+geom_path(aes(y=varprop,x=1:2))+ 
+scale_y_continuous(breaks=seq(0,.75,.1),labels = scales::percent)+
+scale_x_continuous(breaks=1:2)</code></pre>
+<p><img src="/Project1_files/figure-html/PCA-1.png" width="672" /></p>
+<pre class="r"><code>eigval</code></pre>
+<pre><code>##    Comp.1    Comp.2 
+## 1.1303290 0.8695338</code></pre>
+<pre class="r"><code>summary(mergedata_pca, loadings = T)</code></pre>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2
+## Standard deviation     1.0631693 0.9324880
+## Proportion of Variance 0.5652033 0.4347967
+## Cumulative Proportion  0.5652033 1.0000000
+## 
+## Loadings:
+##                              Comp.1 Comp.2
+## age                           0.707  0.707
+## Days.to.Date.of.Last.Contact -0.707  0.707</code></pre>
+<pre class="r"><code>mergedataf&lt;-data.frame(PC1=mergedata_pca$scores[,1.4], PC2=mergedata_pca$scores[,2.8])
+ggplot(mergedataf,aes(PC1, PC2))+geom_point()</code></pre>
+<p><img src="/Project1_files/figure-html/PCA-2.png" width="672" /></p>
+<pre class="r"><code>results&lt;-mergedata%&gt;%as.data.frame%&gt;%
+mutate(PC1=mergedata_pca$sx[,1],PC2=mergedata_pca$x[,2])
+results%&gt;%ggplot(aes(Days.to.Date.of.Last.Contact,localization,color=Converted.Stage, shape=Converted.Stage))+geom_point(size=2)+labs(x=&quot;Days&quot;)+
+  ggtitle(&quot;PCA Graph&quot;)</code></pre>
+<p><img src="/Project1_files/figure-html/PCA-3.png" width="672" /></p>
+<p>```</p>
+</div>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

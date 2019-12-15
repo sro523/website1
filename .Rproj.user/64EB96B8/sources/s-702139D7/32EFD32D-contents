@@ -1,0 +1,162 @@
+---
+title: "Project 1: Exploratory Data Analysis"
+author: "Sydeny Ortiz"
+date: "10/20/2019"
+output: 
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Skin Cancer and Breast Cancer
+
+## Data Wrangling and Data Exploration
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+bcancer <- read.csv("breastcancer.csv")
+scancer<- read.csv("skincancer.csv")
+
+library(tidyverse)
+library(dplyr)
+library(reshape2)
+library(ggplot2)
+```
+
+*Introduction: The two data sets I found were over breast cancrer and skin cancer. I obtained these data sets from the "Kaggle". The two variables they had in common were age and sex. 
+The skin cancer data set included variables that were important diagnostic categories within the realm of pigmented lesions. Additionally variables included age, sex, and how the lesions were confirmed. 
+The breast cancer data set included variables that was focused more on the patient after cancer, including variables such as vitial status, days since they were last contacted from their docotros about the cancer, 
+and survival. Additonally, the data included some variables that idetified the kind of breast cancer by different stages and the differernt clusters. These data sets were interesting to me because I am pre-medincine 
+student and wanted data sets that were somehow related to the health field. I do not expect the data sets to have a lot in common but if the do I would expect them to have similar mean ages for those who have had either 
+breast cancer or skin cancer.*
+
+##Tidying
+##Joining
+```{r pressure}
+colnames(bcancer)[colnames(bcancer)=="Age.at.Initial.Pathologic.Diagnosis"]<- "age"
+scancer1<- scancer%>%mutate(sex=case_when(sex=="male" ~ "MALE", sex=="female" ~ "FEMALE"))
+inner<-inner_join(bcancer,scancer1, by = "age")
+living<-inner%>% filter(Vital.Status=="LIVING")
+```
+
+*For the breast cancer dataset I renamed the column "Age.at.Initial.Pathologic.Diagnosis" to "age" in order for the 
+dataset to have a common name with the skin cancer data set. Additionally, both data sets had the common variable of sex,
+but the data within the columns were labled slighly differently, one was "FEMALE" and one was "female". In order to fix
+this problem I set then equal to each other because they are the same data just labeled differently. I then performed 
+an inner join in order to be able to further analysis the data sets. An inner join was chosen because it created the least amount of null values
+and the data that was dropped was nothing that could really be used to help better the data analysis.
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.*
+
+##dplyr 
+```{r arrange}
+desc<-living%>%arrange(desc(age))
+```
+*To organize the data I arranged the age in descening order.*
+
+
+```{r select}
+trunk<- desc%>%
+  select(sex,age,Vital.Status,Days.to.Date.of.Last.Contact,localization, Converted.Stage)
+trunk2<-trunk%>%select("sex" = sex, "last contact" = Days.to.Date.of.Last.Contact, "age"= age, "localization"=localization, "stage" = Converted.Stage)
+trunk3<-trunk2%>%mutate(sex=case_when(sex=="FEMALE" ~ "F", sex=="MALE" ~ "M"))
+```
+
+##*I selected the five variables that I thought would be best to analyze an renamed them in order to allow the column names to be shorter. 
+##I mutated the sex column so male would turn to "m" and feamle would be "f", just to tidy up the data a little bit.*
+
+
+```{r group}
+trunk2%>%group_by(localization)%>%
+  summarize(n())
+```
+##*In grouped the localization of the skin cancer and summarized how many cases were in each location. This information 
+##will later be useful when further analyzing the data.*
+```{r cor}
+cor(trunk3%>%select(`last contact`, age), method = "pearson", use = "complete.obs")
+
+```
+
+```{r stats}
+trunk3%>%summarize(mean_age = mean(age))
+trunk3%>%summarize(sd_age = sd(age))
+trunk3%>%summarize(var_age =var(age))
+trunk3%>%summarize(min_age = min(age))
+trunk3%>%summarize(max_age=max(age))
+
+trunk3%>%summarize(mean_contact = mean(`last contact`))
+trunk3%>%summarize(sd_contact = sd(`last contact`))
+trunk3%>%summarize(var_contact =var(`last contact`))
+trunk3%>%summarize(min_contact = min(`last contact`))
+trunk3%>%summarize(max_contact=max(`last contact`))
+
+
+ trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(mean(age))
+ trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(sd(age))
+  trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(var(age))
+   trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(max(age))
+    trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(min(age))
+    
+ trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(mean(`last contact`))
+ trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(sd(`last contact`))
+  trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(var(`last contact`))
+   trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(max(`last contact`))
+    trunk3%>%filter(localization =="abdomen" & stage =="Stage IIA")%>%
+  summarize(min(`last contact`))
+
+```
+*Summarize was used to generte the mean, standard deviation, variation, minimum, an maximum values for the age of the patients and the last date contacted from the physicians. This was then used to compare with the  mean, standard deviation, variation, minimum, an maximum values with the location of the abdomen and the stage of IIA.*
+
+
+```{r plot1}
+
+
+ggplot(trunk3, aes(x=localization)) +
+geom_bar(aes(y=trunk3$age), stat="summary", fun.y="mean") +
+geom_errorbar(aes(y=trunk3$age), stat="summary", width = .2, fun.data="mean_se") +
+scale_y_continuous(name = "Avg Age", breaks = c(25,30, 35, 40, 45, 50, 55, 60, 65, 70))
+
+
+```
+
+
+
+
+
+```{r plot2}
+
+
+ggplot(trunk3, aes(x=localization, y=age,color=stage))+geom_point(size=4,
+      alpha=0.5)+ggtitle("Localization by age")+labs(y="Age(years)")+theme(legend.position = "bottom")+
+  theme(axis.text = element_text(colour = "green"))
+
+trunk3%>%ggplot(aes(age,`last contact`,color=localization,
+                    shape=stage))+geom_point(size=4)
+
+```
+
+
+
+
+
+```

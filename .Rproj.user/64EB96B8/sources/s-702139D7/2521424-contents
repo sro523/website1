@@ -1,0 +1,362 @@
+---
+title: "Project 2~Women's World Cup"
+author: "Sydney Ortiz"
+date: "11/24/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(repos=structure(c(CRAN="http://cran.rstudio.com")))
+install.packages("ggExtra")
+install.packages("glmnet")
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+*This data set includes information on the Women's World Cup from 1991-2019. The variables consist of Team's(categorical), scores(numeric), country(categorical), year(numeric), round(categorical),team_yearly_id(numeric), team_num(numeric) and win status(categorical).The intention of this data analysis is to see if what  variables can predict the overall winner of the Women's World Cup each year.*
+
+```{R}
+
+wwc_outcomes <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/wwc_outcomes.csv")
+codes <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/codes.csv")
+newdata<-dplyr::left_join(wwc_outcomes, codes, by = "team")
+head(newdata)
+```
+
+```{R}
+library(mvtnorm)
+library(ggExtra)
+library(tidyr)
+library(tidyverse)
+man1<-manova(cbind(score,yearly_game_id,year,team_num)~win_status,data=newdata)
+summary(man1)
+summary.aov(man1)
+
+man2<-manova(cbind(score,yearly_game_id,year,team_num)~team,data=newdata)
+summary(man2)
+summary.aov(man2)
+  
+man3<-manova(cbind(score,yearly_game_id,year,team_num)~round,data=newdata)
+summary(man3)
+summary.aov(man3)
+  
+newdata%>%group_by(country)%>%summarize(mean(score),mean(year))
+```
+
+*None of the MANOVA test or univariate ANOVA test were signficant leading us to thus, meaning for at least one DV, at least one countries win_status, team,round  mean is different between the categorical variables. If the MANONA test were significant then additonal to the 1 MANOVA test would have been performed, 3 ANOVA test would have been performed, 3x12 t-test would have been performed, and 3x5 t-test would have been performed, a total of 55 test. To calculate the bonferroni correction, we divide alpha by the number of test that would have been run, 0.05/55, the new signficance value would be 0.00091. Assumptions for a MANOVA are random samples and independent observations. Multivariate normality of DVs, homogeneity of withing-group covarience matrices, linear relation among DVs, no extreme univariate or multivariate outliers, no multicollineraity.  It is highly unlikely that these assumptions were met for the data that was used.*
+
+```{R}
+
+install.packages("permute")
+install.packages("lattice")
+library(vegan)
+library(dplyr)
+library(permute)
+library(tidyverse)
+library(lattice)
+library(tidyselect)
+
+
+#PERMANOVA
+library(vegan)
+library(tidyverse)
+dists<-newdata%>%select(score, year)%>%dist()
+adonis(dists~team_num,data=newdata)
+table(newdata$team_num)
+
+#Observed F
+SST<- sum(dists^2)/566
+SSW<-newdata%>%group_by(team_num)%>%select(score,year)%>%
+ do(d=dist(.[2:3],"euclidean"))%>%ungroup()%>%
+ summarize(sum(d[[1]]^2)/284 + sum(d[[2]]^2)/284)%>%pull
+F_obs<-((SST-SSW)/2)/(SSW/566)
+F_obs
+
+
+#Null distribution and test statistic 
+Fs<-replicate(1000,{ 
+new<-newdata%>%mutate(team_num=sample(team_num)) 
+SST2<- sum(dists^2)/566
+SSW2<-new%>%group_by(team_num)%>%select(score,year)%>%
+do(d=dist(.[2:3],"euclidean"))%>%ungroup()%>%
+ summarize(sum(d[[1]]^2)/284 + sum(d[[2]]^2)/284)%>%pull
+((SST2-SSW2)/2)/(SSW2/566)})
+
+#p value 
+mean(Fs>F_obs)
+
+{hist(Fs,prob = T); abline(v=F_obs, col="red", add=T)}
+  
+
+ggplot(newdata,aes(score,fill=team_num))+geom_histogram(bins=7)+facet_wrap(~team_num
+,ncol=2)+
+  ggtitle("Score vs count")
+
+```
+*Null hypothesis: The year and the score of games during the world cup does not differ between team numbers. Alternative hypothesis: The year and the score of games during the world cup do differ team numbers.The results of the PERMANOVA did reveal that there is a signficiant difference between score and year between team number.The adonis p-value= 0.0012,calculated p-value=[1] 0.383 The observed F= 1.340654, which is greater than my null distribution of F . *
+
+
+
+```{r}
+library(lmtest)
+library(sandwich)
+
+fit8<- lm(score ~ win_status*year, data = newdata)
+summary(fit8)
+
+#Mean centering of numberic variables
+
+newdata$year_c<-newdata$year-mean(newdata$year)
+newdata$score_c<-newdata$score-mean(newdata$score)
+newdata$yearly_game_id_c<-newdata$yearly_game_id-mean(newdata$yearly_game_id)
+newdata$team_num_c<-newdata$team_num-mean(newdata$team_num)
+
+#Multiple Regression Test with Interactions of win_status&country aganist score_c.
+fit8.2 <- lm(score_c ~ win_status*year_c, data = newdata)
+summary(fit8.2)
+
+ggplot(newdata, aes(x=win_status, y=score_c,group=year_c))+geom_point(aes(color=year_c))+
+geom_smooth(method="lm",formula=y~1,se=F,fullrange=T,aes(color=year_c))+
+  ggtitle("Win Status vs Score_c groubed by year_c")+
+  ggtitle("Average Score vs Win_Status")
+
+
+mean<-predict(fit8.2,newdata)
+ggplot(newdata,aes(win_status,year))+geom_point()+geom_line(data=newdata,aes(y=mean))+
+  ggtitle("Predicted win status by year")
+
+
+# Check for Linearity and Homoskedasticity
+
+resids<-fit8.2$residuals
+fitvals<-fit8.2$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+geom_hline(yintercept=0, color='red')+
+  ggtitle("Assumption check for linearity")
+ggplot()+geom_histogram(aes(resids), bins=20)
+ks.test(resids, "pnorm", mean=0, sd(resids))
+
+bptest(fit8.2)
+
+ggplot()+geom_histogram(aes(resids), bins=20)+
+  ggtitle("Assumptiom check for Homoskedasticity")
+
+#standard errors
+summary(fit8.2)$coef[,1:2]
+
+# Recompute of Regression Results with Robust Standard Errors
+
+library(sandwich)
+library(lmtest)
+coeftest(fit8, vcov = vcovHC(fit8.2))[,1:2]
+
+#proportion of variation explained by the model
+
+decimalvalue<-(sum((newdata$score-mean(newdata$score))^2)-sum(fit8.2$residuals^2))/sum((newdata$score-mean(newdata$score))^2)
+decimalvalue*100
+
+#Main effects
+fit<-lm(score ~ win_status + year, data=newdata)
+summary(fit)
+
+lrtest(fit, fit8.2)
+
+
+
+```
+
+*When score increases by one point, there is a  0.927518 increase that the game ended in a tie, and 2.322530 increase that the game ended in a win. For every one unit increase in year there is a decrease in points scored -0.0025. For every score increase in a game and increase in year, the likelihood that the game was lost decreases by 1.333  (interaction). Assumptions of linearity, normality, and homoskedasticity were not met according to graphs/hypothesis tests. Robust standard errors were overall greater than original standard errors. The model explains 0.41.77 (41.77%) of variation. Likelihood ratio test shows the interaction model and the model without the interaction are both not significant, but the interaction model being a better model to use. *
+```{r}
+samp_distn<-replicate(5000, {
+ boot_dat<-newdata[sample(nrow(newdata),replace=TRUE),]
+ fit3<-lm(score_c~ win_status*year_c,data=boot_dat)
+ coef(fit3)
+})
+
+samp_distn%>%t%>%as.data.frame%>%summarize_all(sd)
+
+
+
+```
+*The bootstrapped standard errors are less than the original standard errors and less than the robust standard errors. *
+```{r}
+
+library(dplyr)
+library(MASS)
+library(ggplot2)
+library(lmtest)
+library(tidyverse)
+newdata2<-newdata%>%transmute(year=year,
+                              team=team,
+                              score=score,
+                              round=round,
+                      yearly_game_id=yearly_game_id,
+                              team_num=team_num,
+                              country=country,
+                              outcome=win_status,
+                  y=as.numeric(win_status=="Won"))
+
+
+library(lmtest)
+
+#logistic regression
+fit4<-glm(y~round+score,data=newdata2,family=binomial(link="logit"))
+coeftest(fit4)
+#coefficients
+exp(coef(fit4))
+
+#confusion matrix 
+newdata2$predicted<-predict(fit4, data=newdata2, type = "response")
+table(predict=as.numeric(newdata2$predicted>.5),truth=newdata2$y)%>%addmargins
+
+#accuracy
+(273+197)/568
+
+#sensitivity 
+197/240
+
+#specificity
+273/328
+
+#PPV
+273/316
+
+#plot
+library(plotROC)
+data <- newdata2 %>% mutate(prob=predict(fit4,type="response"),
+        prediction = ifelse(prob>.5,1,0))
+ROC<-ggplot(newdata2)+geom_roc(aes(d=truth,m=prob),n.cuts = 0)+geom_segment(aes(x=0,xend=1,
+y=0,yend=1),lty=2)
+  
+ggplot(newdata2,aes(round,score,predicted,color=score))+geom_line()+
+  ggtitle("Round vs score ")
+
+ROCplot<-ggplot(newdata2)+geom_roc(aes(d=y,m=predicted), n.cuts=0)+
+ geom_segment(aes(x=0,xend=1,y=0,yend=1),lty=2)+ggtitle("ROC Plot")
+ROCplot
+
+#AUC
+calc_auc(ROCplot)
+
+##CV
+class_diag<-function(probs,truth){
+
+tab<-table(factor(probs>.5,levels=c("FALSE","TRUE")),truth)
+acc=sum(diag(tab))/sum(tab)
+sens=tab[2,2]/colSums(tab)[2]
+spec=tab[1,1]/colSums(tab)[1]
+ppv=tab[2,2]/rowSums(tab)[2]
+
+if(is.numeric(truth)==FALSE & is.logical(truth)==FALSE) truth<-as.numeric(truth)-1
+
+ord<-order(probs, decreasing=TRUE)
+probs <- probs[ord]; truth <- truth[ord]
+
+TPR=cumsum(truth)/max(1,sum(truth)) 
+FPR=cumsum(!truth)/max(1,sum(!truth))
+
+dup<-c(probs[-1]>=probs[-length(probs)], FALSE)
+TPR<-c(0,TPR[!dup],1); FPR<-c(0,FPR[!dup],1)
+
+n <- length(TPR)
+auc<- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+
+data.frame(acc,sens,spec,ppv,auc)
+}
+
+set.seed(1234)
+k=10
+
+data1<-newdata2[sample(nrow(newdata2)),]
+folds<-cut(seq(1:nrow(newdata2)),breaks=k,labels=F)
+
+diags<-NULL
+for(i in 1:k){
+train<-data1[folds!=i,]
+test<-data1[folds==i,]
+truth<-test$y
+fit6<- glm(y~round+score,data=train,family=binomial(link="logit"))
+probs<- predict(fit6, newdata=test, type="response")
+diags<-rbind(diags,class_diag(probs,truth))}
+
+apply(diags,2,mean)
+
+##density of log-odd
+
+logit<-predict(fit4)
+winstat <-factor(newdata2$outcome, levels = c("Won","Lost"))
+ggplot(newdata2, aes(logit,fill=as.factor(winstat)))+geom_density(alpha=0.3)+geom_vline(xintercept = 0, lty=2)+
+  ggtitle("log-it graph")
+
+
+```
+
+*For every point scored in the group round there is a 0.6027% increase in probablility that the team won and moved on to finals, for every point in the quarter final round there is a 1.041% increase in probablility that the team won and moved on to finals, for every point scored in round of 16 there is a 1.63% increase in probablility that the team won and moved on to finals, for every point scored in semi final round there is 1.04% increase in probablility that the team won and moved on to finals, and for every point scored in the third place playoff round there is a 1.48% increase in probablility that the team won and moved on to finals. Accuracy was 0.8274648, the proprotion of cases that were classified accuratley.Sensitivity was 0.821, the proprtion of cased that were classified 1 correctly. Specificity was 0.8323171 , the proportion of 0 cases that were classified correctly. The ppv was 0.864.The AUC is 0.905 meaning score_c, and round are good predictors of whether a game was won or lost. Results of the 10-fold CV showed accuracy of 0.824, sensitivity of 0.78, and recall of 0.81.*
+
+– Using ggplot, plot density of log-odds (logit) by your binary outcome variable (3)
+
+
+
+```{r pressure, echo=FALSE}
+install.packages("glmnet")
+library(glmnet)
+fit3<-lm(y~year, team_num,yearly_game_id,data=newdata2)
+yhat<-predict(fit3)
+
+mean((newdata2$y-yhat)^2) 
+
+set.seed(1234)
+k=5
+data1<-newdata2[sample(nrow(newdata2)),]
+folds<-cut(seq(1:nrow(newdata2)),breaks=k,labels=F)
+diags<-NULL
+
+for(i in 1:k){
+10
+train<-data1[folds!=i,]
+test<-data1[folds==i,]
+fit4<-lm(y~year, team_num,yearly_game_id,data=newdata2)
+yhat2<-predict(fit4,newdata=test)
+diags<-mean((test$y-yhat2)^2)
+}
+mean(diags)
+
+library(glmnet)
+library(tidyverse)
+y<-as.matrix(newdata2$y)
+x<-newdata2%>%dplyr::select(year, team_num,yearly_game_id)%>%mutate_all(scale)%>%as.matrix
+cv<-cv.glmnet(x,y)
+lasso1<-glmnet(x,y,lambda=cv$lambda.1se)
+coef(lasso1)
+
+
+set.seed(1234)
+k=5 
+
+data2<-newdata2[sample(nrow(newdata2)),]
+folds2<-cut(seq(1:nrow(newdata2)),breaks=k,labels=F) 
+diags<-NULL
+for(i in 1:k){
+  train2<-data1[folds!=i,]
+  test2<-data1[folds==i,]
+  
+  fit<-lm(y~year+team_num+yearly_game_id,data=newdata2)
+  yhat3<-predict(fit,newdata=test2)
+  
+  diags<-mean((newdata2$y-yhat3)^2) 
+}
+
+mean(diags)
+
+
+
+
+```
+*Categorical variables were excluded from lasso because x needed to be numeric. AUC is 0.3563 meaning that the reamining predictor variables are poor indicators if a team win or loses/ties a game during the women's world cup.*
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

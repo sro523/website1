@@ -1,0 +1,41 @@
+---
+title: My favorite python
+author: Sydney Ortiz
+date: '2019-12-14'
+slug: my-favorite-python
+categories: []
+tags: []
+description: ''
+---
+Using the library reticulate, we can have both R chunks and python chunks within the same file! Isn't that neat
+
+
+```{r}
+library(reticulate)
+
+hi<-"Hello"
+```
+
+```{python}
+hi="world"
+print(r.hi, hi)
+```
+
+```{r}
+cat(c(hi,py$hi))
+```
+Some other things I have done in Python involve  creating simple functions with strings.
+
+The code below takes a string of nucleotides and uses them as the input and returns all the 3-mers present, and the number of times that each 3-mer occured with the dictionary function.
+
+```{python}
+my_seq1 = "ATCATCATG"
+seq1list = {}
+for i in range (len(my_seq1)-2):
+  dna=my_seq1[i:i+3]
+  if dna in seq1list:
+    seq1list[dna]+=1
+  else:
+    seq1list[dna]=1
+print(seq1list)
+```
