@@ -375,3 +375,29 @@ remote: Resolving deltas:   0% (0/80)[Kremote: Resolving deltas:   1% (1/80)[
 To https://github.com/sro523/website1.git
  * [new branch]      master -> master
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base)  Sydneyys-MacBBook-Prro:webssite1 ssydro$  [K[A[A[A[A[A[A[A(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website11 sydro$ [K[A(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git commit -m "finished resume e[Ksection"
+[master c54a4f7] finished resume section
+ Committer: Sydney Ortiz <sydro@Sydneys-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 16 files changed, 195 insertions(+), 61 deletions(-)
+ rewrite .Rproj.user/64EB96B8/console06/INDEX001 (70%)
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git com[K[K[Koush[K[K[K[Kpush myorigin master
+Counting objects: 32, done.
+Delta compression using up to 4 threads.
+Compressing objects:   3% (1/32)   Compressing objects:   6% (2/32)   Compressing objects:   9% (3/32)   Compressing objects:  12% (4/32)   Compressing objects:  15% (5/32)   Compressing objects:  18% (6/32)   Compressing objects:  21% (7/32)   Compressing objects:  25% (8/32)   Compressing objects:  28% (9/32)   Compressing objects:  31% (10/32)   Compressing objects:  34% (11/32)   Compressing objects:  37% (12/32)   Compressing objects:  40% (13/32)   Compressing objects:  43% (14/32)   Compressing objects:  46% (15/32)   Compressing objects:  50% (16/32)   Compressing objects:  53% (17/32)   Compressing objects:  56% (18/32)   Compressing objects:  59% (19/32)   Compressing objects:  62% (20/32)   Compressing objects:  65% (21/32)   Compressing objects:  68% (22/32)   Compressing objects:  71% (23/32)   Compressing objects:  75% (24/32)   Compressing objects:  78% (25/32)   Compressing objects:  81% (26/32)   Compressing objects:  84% (27/32)   Compressing objects:  87% (28/32)   Compressing objects:  90% (29/32)   Compressing objects:  93% (30/32)   Compressing objects:  96% (31/32)   Compressing objects: 100% (32/32)   Compressing objects: 100% (32/32), done.
+Writing objects:   3% (1/32)   Writing objects:   6% (2/32)   Writing objects:   9% (3/32)   Writing objects:  12% (4/32)   Writing objects:  15% (5/32)   Writing objects:  18% (6/32)   Writing objects:  21% (7/32)   Writing objects:  25% (8/32)   Writing objects:  28% (9/32)   Writing objects:  31% (10/32)   Writing objects:  34% (11/32)   Writing objects:  37% (12/32)   Writing objects:  40% (13/32)   Writing objects:  43% (14/32)   Writing objects:  46% (15/32)   Writing objects:  50% (16/32)   Writing objects:  53% (17/32)   Writing objects:  56% (18/32)   Writing objects:  59% (19/32)   Writing objects:  62% (20/32)   Writing objects:  65% (21/32)   Writing objects:  68% (22/32)   Writing objects:  71% (23/32)   Writing objects:  75% (24/32)   Writing objects:  78% (25/32)   Writing objects:  81% (26/32)   Writing objects:  84% (27/32)   Writing objects:  87% (28/32)   Writing objects:  90% (29/32)   Writing objects:  93% (30/32)   Writing objects:  96% (31/32)   Writing objects: 100% (32/32)   Writing objects: 100% (32/32), 7.05 KiB | 131.00 KiB/s, done.
+Total 32 (delta 20), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/20)[Kremote: Resolving deltas:   5% (1/20)[Kremote: Resolving deltas:  10% (2/20)[Kremote: Resolving deltas:  15% (3/20)[Kremote: Resolving deltas:  20% (4/20)[Kremote: Resolving deltas:  25% (5/20)[Kremote: Resolving deltas:  30% (6/20)[Kremote: Resolving deltas:  35% (7/20)[Kremote: Resolving deltas:  40% (8/20)[Kremote: Resolving deltas:  45% (9/20)[Kremote: Resolving deltas:  50% (10/20)[Kremote: Resolving deltas:  55% (11/20)[Kremote: Resolving deltas:  65% (13/20)[Kremote: Resolving deltas:  70% (14/20)[Kremote: Resolving deltas:  75% (15/20)[Kremote: Resolving deltas:  80% (16/20)[Kremote: Resolving deltas:  85% (17/20)[Kremote: Resolving deltas:  90% (18/20)[Kremote: Resolving deltas:  95% (19/20)[Kremote: Resolving deltas: 100% (20/20)[Kremote: Resolving deltas: 100% (20/20), completed with 19 local objects.[K
+To https://github.com/sro523/website1.git
+   491faf7..c54a4f7  master -> master
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push myorigin mastercommit -m "finished resume section"add .[K
