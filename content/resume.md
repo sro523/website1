@@ -55,6 +55,6 @@ ACTIVITIES
 - Shadowing Experience: 40 hours Pediatrician and 140 hours ophthalmology.
 
 
-Contact me at: (sydney.ortiz@utexas.edu)
+Contact me at: sydney.ortiz@utexas.edu
 
 If interested more feel free to download my resume here: [Resume](/resume.pdf)
