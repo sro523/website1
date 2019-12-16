@@ -575,3 +575,22 @@ no changes added to commit
 remote: Repository not found.
 fatal: repository 'https://github.com/YourGithubUsername/website1.git/' not found
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add.[K .
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git commit -m "some message"
+[master c1a9616] some message
+ Committer: Sydney Ortiz <sydro@216.dhcp.apogeetelecom.com>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 30 insertions(+)
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push origin master
+remote: Repository not found.
+fatal: repository 'https://github.com/YourGithubUsername/website1.git/' not found
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
