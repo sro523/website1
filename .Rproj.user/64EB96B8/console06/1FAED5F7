@@ -723,3 +723,28 @@ remote: Resolving deltas:   0% (0/9)[Kremote: Resolving deltas:  11% (1/9)[K
 To https://github.com/sro523/website1.git
    bd3c592..5aade23  master -> master
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git commit - m [K[K[Km :s[K[K"some message"
+[master 767b080] some message
+ Committer: Sydney Ortiz <sydro@wireless-10-145-216-168.public.utexas.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 5 files changed, 33 insertions(+), 7 deletions(-)
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git puhs m[K[K[K[Ksh my origi[K[K[K[K[K[K[Kyoi[Krigin master
+Counting objects: 15, done.
+Delta compression using up to 4 threads.
+Compressing objects:   6% (1/15)   Compressing objects:  13% (2/15)   Compressing objects:  20% (3/15)   Compressing objects:  26% (4/15)   Compressing objects:  33% (5/15)   Compressing objects:  40% (6/15)   Compressing objects:  46% (7/15)   Compressing objects:  53% (8/15)   Compressing objects:  60% (9/15)   Compressing objects:  66% (10/15)   Compressing objects:  73% (11/15)   Compressing objects:  80% (12/15)   Compressing objects:  86% (13/15)   Compressing objects:  93% (14/15)   Compressing objects: 100% (15/15)   Compressing objects: 100% (15/15), done.
+Writing objects:   6% (1/15)   Writing objects:  13% (2/15)   Writing objects:  20% (3/15)   Writing objects:  26% (4/15)   Writing objects:  33% (5/15)   Writing objects:  40% (6/15)   Writing objects:  46% (7/15)   Writing objects:  53% (8/15)   Writing objects:  60% (9/15)   Writing objects:  66% (10/15)   Writing objects:  73% (11/15)   Writing objects:  80% (12/15)   Writing objects:  86% (13/15)   Writing objects:  93% (14/15)   Writing objects: 100% (15/15)   Writing objects: 100% (15/15), 1.71 KiB | 39.00 KiB/s, done.
+Total 15 (delta 8), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/8)[Kremote: Resolving deltas:  12% (1/8)[Kremote: Resolving deltas:  25% (2/8)[Kremote: Resolving deltas:  37% (3/8)[Kremote: Resolving deltas:  50% (4/8)[Kremote: Resolving deltas:  62% (5/8)[Kremote: Resolving deltas:  75% (6/8)[Kremote: Resolving deltas:  87% (7/8)[Kremote: Resolving deltas: 100% (8/8)[Kremote: Resolving deltas: 100% (8/8), completed with 8 local objects.[K
+To https://github.com/sro523/website1.git
+   5aade23..767b080  master -> master
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ [K(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
