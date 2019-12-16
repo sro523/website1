@@ -24,17 +24,17 @@ Aside from classes I spend some of my free time volunteering at Dell Children’
 
 ## Work Experience
 - Dr. Kalpaxis Ophthalmology– Austin, Texas		Summer 2019-Present
-Office Assistant
+ Office Assistant
 
 - D’Luxe Nail Salon – Woodlands, Texas 	Summer 2018
-Receptionist  
+ Receptionist  
 
 
 - Swim Instructor- Spring/Klein, Texas	Summer 2014-2018
 
 
 - Amy Thomas Perez Law Firm P.C – Spring, Texas	Summer 2017
-Receptionist/Legal Assistant 
+ Receptionist/Legal Assistant 
 
 
 
@@ -55,5 +55,6 @@ ACTIVITIES
 - Shadowing Experience: 40 hours Pediatrician and 140 hours ophthalmology.
 
 
-My [Email](sydney.ortiz@utexas.edu)
+Contact me at: (sydney.ortiz@utexas.edu)
+
 If interested more feel free to download my resume here: [Resume](/resume.pdf)
