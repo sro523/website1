@@ -545,3 +545,33 @@ After doing this, you may fix the identity used for this commit with:
  7 files changed, 61 insertions(+), 20 deletions(-)
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add .
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git commit -m "some message"
+[master b8b421a] some message
+ Committer: Sydney Ortiz <sydro@216.dhcp.apogeetelecom.com>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 24 insertions(+)
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add.
+git: 'add.' is not a git command. See 'git --help'.
+
+The most similar command is
+	add
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git commit -m "some message"
+On branch master
+Changes not staged for commit:
+	[31mmodified:   .Rproj.user/64EB96B8/console06/1FAED5F7[m
+
+no changes added to commit
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git push origin master
+remote: Repository not found.
+fatal: repository 'https://github.com/YourGithubUsername/website1.git/' not found
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add.[K .
