@@ -44,7 +44,6 @@ Aside from classes I spend some of my free time volunteering at Dell Children’
 - Skills: R-Studio, Excel, Word, Pyton, Project Mangement, Teamwork
 
 ## Activites
-
 ACTIVITIES 
 - University of Texas Women’s Rowing– Austin, Texas 	 2017-2019
 
