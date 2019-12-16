@@ -876,3 +876,21 @@ remote: Resolving deltas:   0% (0/5)[Kremote: Resolving deltas:  20% (1/5)[K
 To https://github.com/sro523/website1.git
    3362ff8..582eb3b  master -> master
 ]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ ti[K[Kgit add.[K . 
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git p[Kcommit -m :[K"som e message"
+[master c66615d] some message
+ Committer: Sydney Ortiz <sydro@wireless-10-145-216-168.public.utexas.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 5 files changed, 35 insertions(+), 12 deletions(-)
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ get push my o[K[Korigin  master
+bash: get: command not found
+]0;~/Desktop/website1(base) Sydneys-MacBook-Pro:website1 sydro$ git add.[K .
