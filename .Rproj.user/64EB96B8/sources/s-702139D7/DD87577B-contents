@@ -186,7 +186,7 @@ html, body {
   text-decoration: none !important;
 }
 .text-muted {
-	color: #6b6b6b;
+	color: #eb8934;
 }
 div.footer{
   border-bottom: 5px solid #eb8934;;
